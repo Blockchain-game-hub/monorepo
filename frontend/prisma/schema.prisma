@@ -21,4 +21,16 @@ model User {
   email         String?  @unique
   avatarURL     String?
   coverPhotoURL String?
+  followedBy    Follow[] @relation("follower")
+  following     Follow[] @relation("following")
+}
+
+model Follow {
+  followerId  Int
+  follower    User    @relation("follower", fields: [followerId], references: [id])
+  followingId Int
+  following   User    @relation("following", fields: [followingId], references: [id])
+  active      Boolean @default(true) // For soft-deletes
+
+  @@id([followerId, followingId])
 }
