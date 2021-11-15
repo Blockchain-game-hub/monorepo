@@ -23,6 +23,8 @@ model User {
   coverPhotoURL String?
   followedBy    Follow[] @relation("follower")
   following     Follow[] @relation("following")
+
+  Post Post[]
 }
 
 model Follow {
@@ -33,4 +35,20 @@ model Follow {
   active      Boolean @default(true) // For soft-deletes
 
   @@id([followerId, followingId])
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  ipfsURL   String
+  isPrivate Boolean  @default(false)
+  type      PostType
+}
+
+enum PostType {
+  AUDIO
+  VIDEO
+  IMAGE
+  TEXT
 }
