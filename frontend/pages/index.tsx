@@ -4,6 +4,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { Heading, Button } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
+import PortalText, { textConfig } from "../components/PortalText";
 
 const Home: NextPage = () => {
   return (
@@ -17,9 +18,7 @@ const Home: NextPage = () => {
         </Head>
 
         <main className={styles.main}>
-          <Heading size="2xl" mb="5">
-            Welcome to Portal 🔮
-          </Heading>
+          <PortalText config={textConfig.h2}>Welcome to Portal 🔮</PortalText>
         </main>
       </div>
     </div>

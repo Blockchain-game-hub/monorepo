@@ -10,6 +10,7 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
+import PortalText from "./PortalText";
 import Gravatar from "react-gravatar";
 import { useWalletContext } from "../context/wallet";
 import Link from "next/link";
@@ -59,7 +60,7 @@ const Navbar = () => {
                     as={FaRegUserCircle}
                     style={{ marginRight: "1em" }}
                   />
-                  View Portal
+                  <PortalText weight="500">View Portal</PortalText>
                 </MenuItem>
                 <MenuItem>
                   <Icon
@@ -68,7 +69,7 @@ const Navbar = () => {
                     h={5}
                     style={{ marginRight: "1em" }}
                   />
-                  Manage Portal
+                  <PortalText weight="500">Manage Portal</PortalText>
                 </MenuItem>
                 <MenuItem>
                   <Icon
@@ -77,7 +78,7 @@ const Navbar = () => {
                     as={FiHelpCircle}
                     style={{ marginRight: "1em" }}
                   />
-                  Help
+                  <PortalText weight="500">Help</PortalText>
                 </MenuItem>
                 <MenuItem>
                   <Icon
@@ -86,7 +87,7 @@ const Navbar = () => {
                     as={FiLogOut}
                     style={{ marginRight: "1em" }}
                   />
-                  Disconnect
+                  <PortalText weight="500">Disconnect</PortalText>
                 </MenuItem>
               </MenuList>
             </Menu>
