@@ -11,9 +11,21 @@ export const textConfig = {
   p: { fontFamily: "Inter" },
 };
 
-const PortalText = ({ config = textConfig.p, children, size, weight }) => {
+const PortalText = ({
+  config = textConfig.p,
+  children,
+  size,
+  weight,
+  color,
+  style,
+}) => {
   return (
-    <Text fontSize={size} fontWeight={weight} style={{ ...config }}>
+    <Text
+      fontSize={size}
+      color={color}
+      fontWeight={weight}
+      style={{ ...config, ...style }}
+    >
       {children}
     </Text>
   );
