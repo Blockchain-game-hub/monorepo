@@ -16,7 +16,7 @@ handler.use(middleware).post(async (
   try {
     // TODO: validate req.body
     // TODO: Come up with standard request format
-    // Currently, the request format is e.g.
+    // Currently, the request format (using form data) is e.g.
     // {
     //   "authorId": 1,
     //   "type": "IMAGE",
@@ -24,7 +24,7 @@ handler.use(middleware).post(async (
     // }
     const files = await getFiles(req.files.file[0].path);
     const cid = await storageClient.put(files);
-    const post = await prisma.post.create({data: {authorId: 1, ipfsURL: cid, type: "IMAGE"}});
+    const post = await prisma.post.create({data: {authorId: parseInt(req.body.authorId), ipfsURL: cid, type: req.body.type[0]}});
     res.status(200).json(post);
   } catch (err) {
       console.log(err);
