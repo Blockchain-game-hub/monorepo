@@ -3,12 +3,13 @@ import { Text } from "@chakra-ui/react";
 
 export const textConfig = {
   h1: {
-    fontFamily: "Montago",
+    fontFamily: "Montaga",
     fontSize: "80px",
   },
-  h2: { fontFamily: "Montago", fontSize: "70px" },
-  h3: { fontFamily: "Montago", fontSize: "42px" },
+  h2: { fontFamily: "Montaga", fontSize: "70px" },
+  h3: { fontFamily: "Montaga", fontSize: "42px" },
   p: { fontFamily: "Inter" },
+  p2: { fontFamily: "Inter", fontSize: "18px" },
 };
 
 const PortalText = ({
