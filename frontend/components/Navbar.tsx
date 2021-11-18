@@ -10,6 +10,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  useDisclosure,
 } from "@chakra-ui/react";
 import PortalText from "./PortalText";
 import Gravatar from "react-gravatar";
@@ -19,13 +20,13 @@ import { IoDiamondOutline, IoGridOutline } from "react-icons/io5";
 import { FiLogOut, FiHelpCircle } from "react-icons/fi";
 import { FaRegUserCircle } from "react-icons/fa";
 import { truncateAddress } from "../utils/address";
-
+import PostModal from "./PostModal";
 
 const Navbar = () => {
   const walletContext = useWalletContext();
   const { address, connect, disconnect } = walletContext;
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Flex
       alignItems="center"
@@ -42,78 +43,78 @@ const Navbar = () => {
           </Box>
         </Link>
       </Box>
-      <Flex
-        alignItems="flex-end"
-        justifyContent="space-between"
-      >
-      <Box>
-        {address ? (
-          <Flex>
-            <Menu>
-              <MenuButton color="black" bg="white" mr="5" as={Button}>
-                <Flex alignItems="center">
-                  <Gravatar
-                    size="30"
-                    style={{ borderRadius: "999px" }}
-                    email={address}
-                  />
-                  <Text ml="3">{truncateAddress(address)}</Text>
-                </Flex>
-              </MenuButton>
-              <MenuList color="black" bg="white">
-                <MenuItem>
-                  <Icon
-                    w={5}
-                    h={5}
-                    as={FaRegUserCircle}
-                    style={{ marginRight: "1em" }}
-                  />
-                  <PortalText weight="500">View Portal</PortalText>
-                </MenuItem>
-                <MenuItem>
-                  <Icon
-                    as={IoGridOutline}
-                    w={5}
-                    h={5}
-                    style={{ marginRight: "1em" }}
-                  />
-                  <PortalText weight="500">Manage Portal</PortalText>
-                </MenuItem>
-                <MenuItem>
-                  <Icon
-                    w={5}
-                    h={5}
-                    as={FiHelpCircle}
-                    style={{ marginRight: "1em" }}
-                  />
-                  <PortalText weight="500">Help</PortalText>
-                </MenuItem>
-                <MenuItem onClick={disconnect}>
-                  <Icon
-                    w={5}
-                    h={5}
-                    as={FiLogOut}
-                    style={{ marginRight: "1em" }}
-                  />
-                  <PortalText weight="500">Disconnect</PortalText>
-                </MenuItem>
-              </MenuList>
-            </Menu>
+      <Flex alignItems="flex-end" justifyContent="space-between">
+        <Box>
+          {address ? (
+            <Flex>
+              <Menu>
+                <MenuButton color="black" bg="white" mr="5" as={Button}>
+                  <Flex alignItems="center">
+                    <Gravatar
+                      size="30"
+                      style={{ borderRadius: "999px" }}
+                      email={address}
+                    />
+                    <Text ml="3">{truncateAddress(address)}</Text>
+                  </Flex>
+                </MenuButton>
+                <MenuList color="black" bg="white">
+                  <MenuItem>
+                    <Icon
+                      w={5}
+                      h={5}
+                      as={FaRegUserCircle}
+                      style={{ marginRight: "1em" }}
+                    />
+                    <PortalText weight="500">View Portal</PortalText>
+                  </MenuItem>
+                  <MenuItem>
+                    <Icon
+                      as={IoGridOutline}
+                      w={5}
+                      h={5}
+                      style={{ marginRight: "1em" }}
+                    />
+                    <PortalText weight="500">Manage Portal</PortalText>
+                  </MenuItem>
+                  <MenuItem>
+                    <Icon
+                      w={5}
+                      h={5}
+                      as={FiHelpCircle}
+                      style={{ marginRight: "1em" }}
+                    />
+                    <PortalText weight="500">Help</PortalText>
+                  </MenuItem>
+                  <MenuItem onClick={disconnect}>
+                    <Icon
+                      w={5}
+                      h={5}
+                      as={FiLogOut}
+                      style={{ marginRight: "1em" }}
+                    />
+                    <PortalText weight="500">Disconnect</PortalText>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+              <Button
+                color="black"
+                bg="white"
+                borderRadius="5"
+                onClick={onOpen}
+              >
+                <Icon as={IoDiamondOutline} style={{ marginRight: "0.5em" }} />{" "}
+                Create
+              </Button>
+            </Flex>
+          ) : (
             <Button color="black" bg="white" borderRadius="5" onClick={connect}>
-              <Icon as={IoDiamondOutline} style={{ marginRight: "0.5em" }} />{" "}
-              Create
+              Connect Wallet
             </Button>
-          </Flex>
-        ) : (
-          <Button color="black" bg="white" borderRadius="5" onClick={connect}>
-            Connect Wallet
-          </Button>
-        )}
-      </Box>
-      <Box>
-          <Button onClick={onOpen}>Create</Button>
-      </Box>
-      {PostModal(isOpen, onClose)}
+          )}
+        </Box>
+
+        {PostModal(isOpen, onClose)}
       </Flex>
     </Flex>
   );
