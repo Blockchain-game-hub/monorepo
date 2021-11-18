@@ -24,7 +24,7 @@ handler.use(middleware).post(async (
     // }
     const files = await getFiles(req.files.file[0].path);
     const cid = await storageClient.put(files);
-    const post = await prisma.post.create({data: {authorId: parseInt(req.body.authorId), ipfsURL: cid, type: req.body.type[0]}});
+    const post = await prisma.post.create({data: {authorId: parseInt(req.body.authorId), ipfsURL: cid, type: req.body.type[0], isPrivate: (req.body.isPrivate[0] === 'true'), title: req.body.title[0], description: req.body.description[0]}});
     res.status(200).json(post);
   } catch (err) {
       console.log(err);
