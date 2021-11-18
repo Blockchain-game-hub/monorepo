@@ -5,12 +5,24 @@ import ContentCard from "../../components/ContentCard";
 import Navbar from "../../components/Navbar";
 import { creator, contentCards } from "../../utils/mockData";
 import PortalText, { textConfig } from "../../components/PortalText";
+import { capitalizeFirstChar } from "../../utils/strings";
 
 const Portal = () => {
   const [selectedTab, setSelectedTab] = useState("ALL");
 
+  const renderBackgroundForTier = (tier) => {
+    const normalizedTier = tier.toLowerCase();
+    if (normalizedTier === "monthly") {
+      return "radial-gradient(50% 50% at 50% 50%, #BD975D 0%, rgba(38, 37, 37, 0.65) 100%)";
+    } else if (normalizedTier === "yearly") {
+      return "radial-gradient(50% 50% at 50% 50%, #C0BFBF 0%, rgba(38, 37, 37, 0.65) 100%)";
+    } else {
+      return "radial-gradient(50% 50% at 50% 50%, #B4A737 0%, rgba(38, 37, 37, 0.65) 100%)";
+    }
+  };
+
   return (
-    <Flex flex="1" minHeight="100vh" flexDir="column">
+    <Flex bg="black" flex="1" minHeight="100vh" flexDir="column">
       <Navbar />
       <Flex
         justifyContent="center"
@@ -45,6 +57,7 @@ const Portal = () => {
         flexDirection="row"
         width="100%"
         minHeight="10em"
+        pb="10"
         justifyContent="center"
       >
         <Flex width="10%" />
@@ -85,21 +98,24 @@ const Portal = () => {
           </Button>
         </Flex>
       </Flex>
-      <Flex
-        flexDirection="row"
-        width="100%"
-        minHeight="20em"
-        justifyContent="center"
-      >
-        {/* TODO: Add carousel showcasing content here */}
-      </Flex>
+      {false && (
+        <Flex
+          flexDirection="row"
+          width="100%"
+          minHeight="20em"
+          justifyContent="center"
+        >
+          {/* TODO: Add carousel showcasing content here */}
+        </Flex>
+      )}
 
       <Flex
+        pb="10"
         flexDirection="column"
         width="100%"
         minHeight="25em"
         bg="#333333"
-        justifyContent="space-between"
+        justifyContent="flex-start"
       >
         <Flex
           flexDirection="row"
@@ -127,6 +143,28 @@ const Portal = () => {
               Manage Portal
             </Button>{" "}
           </Flex>
+        </Flex>
+        <Flex alignItems="center" justifyContent="center" width="100%">
+          {creator.membershipTiers.map((tier) => (
+            <Flex
+              bg="red"
+              m="5"
+              height="15em"
+              width="15em"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              borderRadius="50%"
+              background={renderBackgroundForTier(tier.type)}
+            >
+              <PortalText weight="500" size="3xl">
+                {tier.price} {tier.currency}
+              </PortalText>
+              <PortalText weight="400" size="xl">
+                {capitalizeFirstChar(tier.type)}
+              </PortalText>
+            </Flex>
+          ))}
         </Flex>
       </Flex>
       <Flex

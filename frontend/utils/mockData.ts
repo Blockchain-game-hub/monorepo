@@ -46,9 +46,21 @@ export const creator = {
   website: "https://rickandmorty.com",
   location: "Los Angeles, CA",
   avatarURL: "https://randomuser.me/api/portraits/women/95.jpg",
-  membershipTiers: {
-    monthly: "10 DAI",
-    yearly: "100 DAI",
-    lifetime: "1000 DAI",
-  },
+  membershipTiers: [
+    {
+      type: "monthly",
+      price: 10,
+      currency: "DAI",
+    },
+    {
+      type: "yearly",
+      price: 100,
+      currency: "DAI",
+    },
+    {
+      type: "lifetime",
+      price: 500,
+      currency: "DAI",
+    },
+  ],
 };

@@ -2,7 +2,14 @@ import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { Heading, Button, Flex, Grid, GridItem, Container } from "@chakra-ui/react";
+import {
+  Heading,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Container,
+} from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import ContentCard from "../components/ContentCard";
 import PortalText, { textConfig } from "../components/PortalText";
@@ -11,7 +18,7 @@ import { contentCards } from "../utils/mockData";
 
 const Home: NextPage = () => {
   return (
-    <div>
+    <div style={{ background: "black" }}>
       <Navbar />
       <div className={styles.container}>
         <Head>
@@ -21,14 +28,31 @@ const Home: NextPage = () => {
         </Head>
 
         <main className={styles.main}>
-          <PortalText config={textConfig.h2} style={{textAlign: "center", lineHeight: "1.2"}}>Create a portal into your world</PortalText>
-            <Container maxW="container.md" paddingTop="20px" centerContent>
-              <PortalText config={textConfig.p2} style={{textAlign: "center"}}>We are building a network where creators can tap into their community to create resilient collectives aligned by social or economic incentives.</PortalText>
-              <Button color="black" bg="white" borderRadius="5" marginTop="26px">
-                Create a Portal
-              </Button>
-            </Container>
-          <Grid templateColumns={["repeat(1, 1fr)","repeat(1, 1fr)","repeat(3, 1fr)"]} gap={5} paddingTop="60px">
+          <PortalText
+            config={textConfig.h2}
+            style={{ textAlign: "center", lineHeight: "1.2" }}
+          >
+            Create a portal into your world
+          </PortalText>
+          <Container maxW="container.md" paddingTop="20px" centerContent>
+            <PortalText config={textConfig.p2} style={{ textAlign: "center" }}>
+              We are building a network where creators can tap into their
+              community to create resilient collectives aligned by social or
+              economic incentives.
+            </PortalText>
+            <Button color="black" bg="white" borderRadius="5" marginTop="26px">
+              Create a Portal
+            </Button>
+          </Container>
+          <Grid
+            templateColumns={[
+              "repeat(1, 1fr)",
+              "repeat(1, 1fr)",
+              "repeat(3, 1fr)",
+            ]}
+            gap={5}
+            paddingTop="60px"
+          >
             <ContentCard content={contentCards[0]} showDate={false} />
             <ContentCard content={contentCards[1]} showDate={false} />
             <ContentCard content={contentCards[2]} showDate={false} />
