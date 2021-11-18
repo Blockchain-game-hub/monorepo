@@ -9,17 +9,20 @@ const MediaPost = ({ content, showDate = true }) => {
     <Flex flexDirection="column" mt="1em" mb="2em">
       <Flex>
         <img
-              style={{
-                borderRadius: "4px",
-                width: "975px",
-              }}
-              src={content?.previewImageURL}
-            />
+          style={{
+            borderRadius: "4px",
+            width: "975px",
+          }}
+          src={content?.previewImageURL}
+        />
       </Flex>
 
-      <Flex mt="1em" mb="3em" alignItems="center" justifyContent="center" >
-        <PortalText config={textConfig.bigField} style={{ textTransform: "uppercase", color: "#ccc" }} >
-              {moment(content.publishedAt).format("MMMM Do YYYY")}
+      <Flex mt="2em" mb="3em" alignItems="center" justifyContent="center">
+        <PortalText
+          config={textConfig.bigField}
+          style={{ textTransform: "uppercase", color: "#ccc" }}
+        >
+          {moment(content.publishedAt).format("MMMM Do YYYY")}
         </PortalText>
       </Flex>
 
@@ -27,13 +30,19 @@ const MediaPost = ({ content, showDate = true }) => {
         {content.title}
       </PortalText>
 
-      <PortalText config={textConfig.p2}>
-        {content.description}
-      </PortalText>
+      <PortalText config={textConfig.p2}>{content.description}</PortalText>
 
-      <Flex mt="4em"  alignItems="center" justifyContent="center" flexDirection="column">
-        <PortalText config={textConfig.bigField} style={{ textTransform: "uppercase", color: "#ccc" }}>
-              Created By
+      <Flex
+        mt="4em"
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="column"
+      >
+        <PortalText
+          config={textConfig.bigField}
+          style={{ textTransform: "uppercase", color: "#ccc" }}
+        >
+          Created By
         </PortalText>
         <Flex alignItems="center" justifyContent="center">
           <img
@@ -44,28 +53,25 @@ const MediaPost = ({ content, showDate = true }) => {
             }}
             src={content?.avatarURL}
           />
-            <PortalText config={textConfig.h3}>
-              {content.author}
-            </PortalText>
-          </Flex>
+          <PortalText config={textConfig.h3}>{content.author}</PortalText>
         </Flex>
-
-        {content?.membersOnly && (
-          <Flex
-            mt="0.5em"
-            width="100%"
-            alignItems="center"
-            justifyContent="center"
-            flexDirection="row"
-          >
-            <Icon mb={1} as={RiLock2Line} w={6} h={6} color="c4c4c4" />
-            <PortalText weight="500" color="#c4c4c4">
-              For members-only
-            </PortalText>
-          </Flex>
-        )}
-
       </Flex>
+
+      {content?.membersOnly && (
+        <Flex
+          mt="0.5em"
+          width="100%"
+          alignItems="center"
+          justifyContent="center"
+          flexDirection="row"
+        >
+          <Icon mr={2} mb={1} as={RiLock2Line} w={6} h={6} color="c4c4c4" />
+          <PortalText weight="500" color="#c4c4c4">
+            For members-only
+          </PortalText>
+        </Flex>
+      )}
+    </Flex>
   );
 };
 
