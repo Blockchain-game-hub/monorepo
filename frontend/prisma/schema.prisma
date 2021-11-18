@@ -38,12 +38,14 @@ model Follow {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  ipfsURL   String
-  isPrivate Boolean  @default(false)
-  type      PostType
+  id          Int      @id @default(autoincrement())
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int
+  title       String
+  description String
+  ipfsURL     String
+  isPrivate   Boolean  @default(false)
+  type        PostType
 }
 
 enum PostType {
