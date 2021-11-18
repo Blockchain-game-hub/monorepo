@@ -6,6 +6,7 @@ export const contentCards = [
     membersOnly: true,
     publishedAt: new Date(),
     title: "Morning Brew",
+    description: "Lorem Ipsum",
     avatarURL: "https://randomuser.me/api/portraits/women/95.jpg",
   },
   {
@@ -15,6 +16,7 @@ export const contentCards = [
     membersOnly: false,
     publishedAt: new Date(),
     title: "Morning Brew",
+    description: "Lorem Ipsum",
     avatarURL: "https://randomuser.me/api/portraits/women/95.jpg",
   },
   {
@@ -24,15 +26,17 @@ export const contentCards = [
     membersOnly: true,
     publishedAt: new Date(),
     title: "Morning Brew",
+    description: "Lorem Ipsum",
     avatarURL: "https://randomuser.me/api/portraits/women/95.jpg",
   },
   {
-    author: "Anita Rose",
+    author: "Rick & Morty",
     previewImageURL:
-      "https://images.unsplash.com/photo-1518057111178-44a106bad636?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y29mZmVlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    membersOnly: false,
+      "https://static.onecms.io/wp-content/uploads/sites/6/2019/11/rick-and-morty-season-4-2000.jpg",
+    membersOnly: true,
     publishedAt: new Date(),
-    title: "Morning Brew",
+    title: "Timeless Saga into the Abyss",
+    description: "When the going gets tough, what are you going to do about it? Obviously watching some Rick & Morty helps. This new special is about an adventure into the abyss. When the going gets tough, what are you going to do about it? Obviously watching some Rick & Morty helps. This new special is about an adventure into the abyss.",
     avatarURL: "https://randomuser.me/api/portraits/women/95.jpg",
   },
 ];
