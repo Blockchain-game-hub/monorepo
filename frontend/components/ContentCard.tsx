@@ -4,11 +4,10 @@ import PortalText from "./PortalText";
 import moment from "moment";
 import { RiLock2Line } from "react-icons/ri";
 
-const ContentCard = ({ content }) => {
+const ContentCard = ({ content, showDate=true }) => {
   return (
     <Flex
       borderRadius="4"
-      m="5"
       bg="white"
       height="25em"
       width="17em"
@@ -45,9 +44,11 @@ const ContentCard = ({ content }) => {
         )}
       </Flex>
       <Flex p="3" width="100%" flexDirection="column">
-        <PortalText weight="500" size="xs" color="#52525B">
-          {moment(content.publishedAt).format("MMMM Do YYYY")}
-        </PortalText>
+        {showDate && (
+          <PortalText weight="500" size="xs" color="#52525B">
+            {moment(content.publishedAt).format("MMMM Do YYYY")}
+          </PortalText>
+        )}
         <PortalText
           style={{ marginTop: "0.5em" }}
           color="black"
