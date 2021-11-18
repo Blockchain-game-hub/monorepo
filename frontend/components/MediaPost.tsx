@@ -1,12 +1,13 @@
 import React from "react";
-import { Flex, Icon, Container } from "@chakra-ui/react";
+import { Flex, Icon } from "@chakra-ui/react";
 import PortalText, { textConfig } from "./PortalText";
 import moment from "moment";
+import Link from "next/link";
 import { RiLock2Line } from "react-icons/ri";
 
 const MediaPost = ({ content, showDate = true }) => {
   return (
-    <Flex bg="black" flexDirection="column" mt="1em" mb="2em">
+    <Flex flexDirection="column" mt="1em" mb="2em">
       <Flex>
         <img
           style={{
@@ -44,17 +45,19 @@ const MediaPost = ({ content, showDate = true }) => {
         >
           Created By
         </PortalText>
-        <Flex alignItems="center" justifyContent="center">
-          <img
-            style={{
-              borderRadius: "50%",
-              width: "3em",
-              marginRight: "0.5em",
-            }}
-            src={content?.avatarURL}
-          />
-          <PortalText config={textConfig.h3}>{content.author}</PortalText>
-        </Flex>
+        <Link href={`/portal/${content.username}`}>
+          <Flex cursor="pointer" alignItems="center" justifyContent="center">
+            <img
+              style={{
+                borderRadius: "50%",
+                width: "3em",
+                marginRight: "0.5em",
+              }}
+              src={content?.avatarURL}
+            />
+            <PortalText config={textConfig.h3}>{content.author}</PortalText>
+          </Flex>
+        </Link>
       </Flex>
 
       {content?.membersOnly && (
