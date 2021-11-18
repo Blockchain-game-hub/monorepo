@@ -4,7 +4,7 @@ import PortalText from "./PortalText";
 import moment from "moment";
 import { RiLock2Line } from "react-icons/ri";
 
-const ContentCard = ({ content, showDate=true }) => {
+const ContentCard = ({ content, showDate = true }) => {
   return (
     <Flex
       borderRadius="4"
@@ -27,7 +27,7 @@ const ContentCard = ({ content, showDate=true }) => {
         />
         {content?.membersOnly && (
           <Flex
-            zIndex="10"
+            zIndex="2"
             borderTopRadius="4"
             bg="rgba(0,0,0,0.75)"
             width="100%"

@@ -80,7 +80,7 @@ const Navbar = () => {
                   />
                   <PortalText weight="500">Help</PortalText>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={disconnect}>
                   <Icon
                     w={5}
                     h={5}
