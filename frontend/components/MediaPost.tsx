@@ -6,7 +6,7 @@ import { RiLock2Line } from "react-icons/ri";
 
 const MediaPost = ({ content, showDate = true }) => {
   return (
-    <Flex flexDirection="column" mt="1em" mb="2em">
+    <Flex bg="black" flexDirection="column" mt="1em" mb="2em">
       <Flex>
         <img
           style={{
