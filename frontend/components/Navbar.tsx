@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Flex,
   Icon,
@@ -19,9 +20,12 @@ import { FiLogOut, FiHelpCircle } from "react-icons/fi";
 import { FaRegUserCircle } from "react-icons/fa";
 import { truncateAddress } from "../utils/address";
 
+
 const Navbar = () => {
   const walletContext = useWalletContext();
   const { address, connect, disconnect } = walletContext;
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  
   return (
     <Flex
       alignItems="center"
@@ -38,6 +42,10 @@ const Navbar = () => {
           </Box>
         </Link>
       </Box>
+      <Flex
+        alignItems="flex-end"
+        justifyContent="space-between"
+      >
       <Box>
         {address ? (
           <Flex>
@@ -102,6 +110,11 @@ const Navbar = () => {
           </Button>
         )}
       </Box>
+      <Box>
+          <Button onClick={onOpen}>Create</Button>
+      </Box>
+      {PostModal(isOpen, onClose)}
+      </Flex>
     </Flex>
   );
 };
