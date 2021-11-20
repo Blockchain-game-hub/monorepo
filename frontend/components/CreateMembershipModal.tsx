@@ -16,7 +16,6 @@ import {
   MenuList,
   MenuItem,
   useToast,
-  MenuDivider,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import PortalText, { textConfig } from "./PortalText";
@@ -31,11 +30,6 @@ const CreateMembershipModal = ({ isOpen, onClose }) => {
   const [priceDAI, setPriceDAI] = useState(null);
   const [numKeys, setNumKeys] = useState(null);
   const [tier, setTier] = useState(membershipDurations[0]);
-
-  // const provider = new ethers.providers.AlchemyProvider(
-  //   "rinkeby",
-  //   "https://eth-rinkeby.alchemyapi.io/v2/0wfrMZO4viQ3Svd-1bJt-nL88UzF5Bnt"
-  // );
 
   const walletContext = useWalletContext();
   const toast = useToast();
@@ -74,14 +68,11 @@ const CreateMembershipModal = ({ isOpen, onClose }) => {
     return <div />;
   }
 
-  const maxNumberOfKeys = "1337";
-  const currencyContractAddress = "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735"; // Rinkeby DAI
-  const keyPrice = "0.01";
-  //   const name = "Test lock";
-  const expirationDuration = 60;
+  // Rinkeby DAI
+  const currencyContractAddress = "0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735";
 
   async function createLock() {
-    const lock = await walletService.createLock(
+    await walletService.createLock(
       {
         maxNumberOfKeys: numKeys,
         currencyContractAddress,
