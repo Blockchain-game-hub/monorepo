@@ -22,7 +22,9 @@ const ContentCard = ({ content, showDate = true }) => {
             borderTopRadius="4"
             width="100%"
             height="100%"
-            backgroundImage={content.previewImageURL}
+            backgroundImage={
+              content?.previewImageURL || "/images/placeholder.png"
+            }
             backgroundPosition="center"
             backgroundRepeat="no-repeat"
             backgroundSize="cover"

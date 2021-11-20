@@ -224,7 +224,6 @@ const Portal = () => {
 
                 onOpen();
               }}
-              bg="red"
               m="5"
               height="15em"
               width="15em"
@@ -407,11 +406,9 @@ const Portal = () => {
           gap={10}
           paddingTop="30px"
         >
-          {/* TODO: Add tab bar to select All | Public | Members Only */}
-          <ContentCard content={contentCards[0]} showDate={false} />
-          <ContentCard content={contentCards[1]} showDate={false} />
-          <ContentCard content={contentCards[2]} showDate={false} />
-          <ContentCard content={contentCards[3]} showDate={false} />
+          {portalData?.posts.map((post) => {
+            return <ContentCard content={post} showDate={true} />;
+          })}
         </Grid>
       </Flex>
       {selectedLock && (
