@@ -1,6 +1,5 @@
-import makeStorageClient from "./storage/client";
+import makeStorageClient from "../post/storage/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import fetch from "node-fetch";
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,11 +18,15 @@ export default async function handler(
         
         // unpack File objects from the response
         const files = await ipfsRes.files()
-        for (const file of files) {
-            console.log(`${file.cid} -- ${file.path} -- ${file.size}`)
+        if (files.length > 1) {
+          res.status(200).json(files);
+        } else if (files.length === 1) {
+          const file = files[0]
+          res.status(200).json(file.cid);
+        } else {
+          res.status(204).json({});
         }
 
-      res.status(200).json(files);
     } else {
       res.status(400).json(null);
     }

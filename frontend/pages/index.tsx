@@ -18,6 +18,26 @@ import { useRouter } from "next/router";
 
 import { contentCards } from "../utils/mockData";
 
+const posts = async () => {
+  await fetch("/api/post", {
+      method: "GET",
+      headers: {
+          "Authorization": `${auth.token}`,
+          "Content-Type": "application/json",
+      },
+  }).then(
+      (response) => {
+          if (response.status === 200) {
+              return response.json();
+          } else {
+              console.log("not ok");
+              return response.json();
+          }
+      }
+  ).catch(err => console.log(err));
+  
+};
+
 const Home: NextPage = () => {
   const walletContext = useWalletContext();
   const { address, connect, disconnect } = walletContext;
