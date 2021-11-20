@@ -67,9 +67,12 @@ const Portal = () => {
 
   const renderBackgroundForTier = (tier) => {
     const normalizedTier = tier.toLowerCase();
-    if (normalizedTier === "monthly") {
+    if (normalizedTier.includes("month")) {
       return "radial-gradient(50% 50% at 50% 50%, #BD975D 0%, rgba(38, 37, 37, 0.65) 100%)";
-    } else if (normalizedTier === "yearly") {
+    } else if (
+      normalizedTier.includes("year") ||
+      normalizedTier.includes("annual")
+    ) {
       return "radial-gradient(50% 50% at 50% 50%, #C0BFBF 0%, rgba(38, 37, 37, 0.65) 100%)";
     } else {
       return "radial-gradient(50% 50% at 50% 50%, #B4A737 0%, rgba(38, 37, 37, 0.65) 100%)";
