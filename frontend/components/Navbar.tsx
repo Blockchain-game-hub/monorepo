@@ -57,7 +57,7 @@ const Navbar = () => {
                   </Flex>
                 </MenuButton>
                 <MenuList color="black" bg="white">
-                  <Link href={`/portal/${auth?.username}`}>
+                  <Link href={`/portal/${auth?.address}`}>
                     <MenuItem>
                       <Icon
                         w={5}

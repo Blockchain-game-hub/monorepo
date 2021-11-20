@@ -10,10 +10,10 @@ export default async function handler(
 ) {
   try {
     if (req.method === "GET") {
-      const { username } = req.query;
+      const { address } = req.query;
       const user = await prisma.user.findFirst({
         where: {
-          username,
+          address,
         },
       });
 
@@ -27,6 +27,7 @@ export default async function handler(
         ...post,
         author: user?.name || "",
         username: user?.username || "",
+        address: user?.address || "",
         publishedAt: post?.createdAt,
         membersOnly: post?.isPrivate,
         avatarURL: user?.avatarURL,

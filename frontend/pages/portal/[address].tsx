@@ -40,19 +40,19 @@ const Portal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
-  const { username } = router.query;
+  const { address } = router.query;
   const { auth } = walletContext;
-  const myUsername = auth?.username;
+  const myAddress = auth?.address;
 
-  const isCreator = username === myUsername;
+  const isCreator = address === myAddress;
 
   useEffect(() => {
-    if (!username) {
+    if (!address) {
       return;
     }
     async function fetchPortalData() {
       try {
-        const response = await fetch(`/api/portal/${username}`, {
+        const response = await fetch(`/api/portal/${address}`, {
           method: "GET",
         });
         const result = await response.json();
@@ -63,7 +63,7 @@ const Portal = () => {
     }
 
     fetchPortalData();
-  }, [username]);
+  }, [address]);
 
   useEffect(() => {
     if (
@@ -216,8 +216,9 @@ const Portal = () => {
           </Flex>
         </Flex>
         <Flex alignItems="center" justifyContent="center" width="100%">
-          {lockData.locks.map((lock) => (
+          {lockData.locks.map((lock: any) => (
             <Flex
+              key={lock.address}
               cursor="pointer"
               onClick={() => {
                 setSelectedLock(lock);
@@ -311,7 +312,7 @@ const Portal = () => {
               </PortalText>
             </Box>
             <Box>
-              <Link passHref={true} href={portalData?.user?.website}>
+              <Link passHref={true} href={portalData?.user?.website ? portalData?.user?.website : ""}>
                 <a target="_blank">
                   <PortalText>{portalData?.user?.website}</PortalText>
                 </a>
