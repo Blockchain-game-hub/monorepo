@@ -94,7 +94,7 @@ const CreateMembershipModal = ({ isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent alignItems="flex-start">
+      <ModalContent bg="#1F1F1F" alignItems="flex-start">
         <ModalHeader>
           <PortalText config={textConfig.h4}>Add Membership Tier</PortalText>
         </ModalHeader>
