@@ -59,24 +59,28 @@ const Navbar = () => {
                   </Flex>
                 </MenuButton>
                 <MenuList color="black" bg="white">
-                  <MenuItem>
-                    <Icon
-                      w={5}
-                      h={5}
-                      as={FaRegUserCircle}
-                      style={{ marginRight: "1em" }}
-                    />
-                    <PortalText weight="500">View Portal</PortalText>
-                  </MenuItem>
-                  <MenuItem>
-                    <Icon
-                      as={IoGridOutline}
-                      w={5}
-                      h={5}
-                      style={{ marginRight: "1em" }}
-                    />
-                    <PortalText weight="500">Manage Portal</PortalText>
-                  </MenuItem>
+                  <Link href="/portal/anita">
+                    <MenuItem>
+                      <Icon
+                        w={5}
+                        h={5}
+                        as={FaRegUserCircle}
+                        style={{ marginRight: "1em" }}
+                      />
+                      <PortalText weight="500">View Portal</PortalText>
+                    </MenuItem>
+                  </Link>
+                  <Link href="/manage">
+                    <MenuItem>
+                      <Icon
+                        as={IoGridOutline}
+                        w={5}
+                        h={5}
+                        style={{ marginRight: "1em" }}
+                      />
+                      <PortalText weight="500">Manage Portal</PortalText>
+                    </MenuItem>
+                  </Link>
                   <MenuItem>
                     <Icon
                       w={5}
