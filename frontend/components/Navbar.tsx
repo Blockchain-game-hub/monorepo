@@ -1,4 +1,4 @@
-import React from "react";  
+import React from "react";
 import {
   Flex,
   Icon,
@@ -57,7 +57,6 @@ const Navbar = () => {
                   </Flex>
                 </MenuButton>
                 <MenuList color="black" bg="white">
-
                   <Link href="/portal/anita">
                     <MenuItem>
                       <Icon
@@ -82,24 +81,6 @@ const Navbar = () => {
                   </Link>
 
                   <EditProfileForm />
-                  <MenuItem>
-                    <Icon
-                      w={5}
-                      h={5}
-                      as={FaRegUserCircle}
-                      style={{ marginRight: "1em" }}
-                    />
-                    <PortalText weight="500">View Portal</PortalText>
-                  </MenuItem>
-                  <MenuItem>
-                    <Icon
-                      as={IoGridOutline}
-                      w={5}
-                      h={5}
-                      style={{ marginRight: "1em" }}
-                    />
-                    <PortalText weight="500">Manage Portal</PortalText>
-                  </MenuItem>
 
                   <MenuItem>
                     <Icon
@@ -121,7 +102,7 @@ const Navbar = () => {
                   </MenuItem>
                 </MenuList>
               </Menu>
-            <PostModal />
+              <PostModal />
             </Flex>
           ) : (
             <Button color="black" bg="white" borderRadius="5" onClick={connect}>
@@ -129,7 +110,6 @@ const Navbar = () => {
             </Button>
           )}
         </Box>
-
       </Flex>
     </Flex>
   );

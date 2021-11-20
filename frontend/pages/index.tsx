@@ -13,10 +13,16 @@ import {
 import Navbar from "../components/Navbar";
 import ContentCard from "../components/ContentCard";
 import PortalText, { textConfig } from "../components/PortalText";
+import { useWalletContext } from "../context/wallet";
+import { useRouter } from "next/router";
 
 import { contentCards } from "../utils/mockData";
 
 const Home: NextPage = () => {
+  const walletContext = useWalletContext();
+  const { address, connect, disconnect } = walletContext;
+  const router = useRouter();
+
   return (
     <div style={{ background: "black" }}>
       <Navbar />
@@ -40,7 +46,13 @@ const Home: NextPage = () => {
               community to create resilient collectives aligned by social or
               economic incentives.
             </PortalText>
-            <Button color="black" bg="white" borderRadius="5" marginTop="26px">
+            <Button
+              onClick={address ? () => router.push("/manage") : connect}
+              color="black"
+              bg="white"
+              borderRadius="5"
+              marginTop="26px"
+            >
               Create a Portal
             </Button>
           </Container>

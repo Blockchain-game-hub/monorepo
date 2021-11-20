@@ -1,13 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Flex, Button, useDisclosure } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import Navbar from "../components/Navbar";
 
 import CreateMembershipModal from "../components/CreateMembershipModal";
 import PortalText, { textConfig } from "../components/PortalText";
+import { useWalletContext } from "../context/wallet";
+import { useRouter } from "next/router";
+import Spinner from "../components/Spinner";
 
 const Manage = () => {
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const walletContext = useWalletContext();
+
+  const { address } = walletContext;
+
+  const isWindowDefined = typeof window !== undefined;
+
+  useEffect(() => {
+    if (!isWindowDefined) {
+      return <div />;
+    }
+    if (!address) {
+      router.push("/");
+    }
+  }, [isWindowDefined]);
+
+  if (!isWindowDefined || !address) {
+    return <Spinner title="Loading" />;
+  }
 
   return (
     <Flex bg="black" flex="1" minHeight="100vh" flexDir="column">
