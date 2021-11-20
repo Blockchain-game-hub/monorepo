@@ -51,7 +51,7 @@ const Navbar = () => {
                 <MenuButton color="black" bg="white" mr="5" as={Button}>
                   <Flex alignItems="center">
                     <Gravatar
-                      size="30"
+                      size={30}
                       style={{ borderRadius: "999px" }}
                       email={address}
                     />

@@ -1,22 +1,19 @@
-import React from "react";
-import { Flex } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Flex, Button, useDisclosure } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
-import { textConfig } from "../components/PortalText";
-import PortalText from "../components/PortalText";
-import ContentCard from "../components/ContentCard";
 
-import { contentCards } from "../utils/mockData";
+import CreateMembershipModal from "../components/CreateMembershipModal";
 
 const Components = () => {
-  return (
-    <Flex flex="1" minHeight="100vh" flexDir="column">
-      <Navbar />
-      <PortalText config={textConfig.h2}>Components</PortalText>
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-      <Flex p="10" flex="1" flexDirection="row">
-        <ContentCard content={contentCards[0]} />
-        <ContentCard content={contentCards[1]} />
-      </Flex>
+  return (
+    <Flex bg="black" flex="1" minHeight="100vh" flexDir="column">
+      <Navbar />
+      <Button color="black" bg="white" width="10em" onClick={onOpen}>
+        Mint Lock
+      </Button>
+      <CreateMembershipModal onClose={onClose} isOpen={isOpen} />
     </Flex>
   );
 };

@@ -381,6 +381,14 @@
   dependencies:
     "@chakra-ui/utils" "1.9.1"
 
+"@chakra-ui/icons@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-1.1.1.tgz#e4b191fd38be999c4434ff2b1fb69a5eaf3cf226"
+  integrity sha512-/+u6euCOFw6J1DZW7NcVFtib4mygJBoqRdsKiU1Z3uiTC+zQTBzcCt54NQ+kK8rhuNzJ+odahnt/AbjBJgZ+5A==
+  dependencies:
+    "@chakra-ui/icon" "1.2.1"
+    "@types/react" "^17.0.15"
+
 "@chakra-ui/image@1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@chakra-ui/image/-/image-1.1.1.tgz#39ecb77155e9e1fbbc68e825eb46405808805a8c"
@@ -1668,6 +1676,15 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
+"@types/react@^17.0.15":
+  version "17.0.35"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.35.tgz#217164cf830267d56cd1aec09dcf25a541eedd4c"
+  integrity sha512-r3C8/TJuri/SLZiiwwxQoLAoavaczARfT9up9b4Jr65+ErAUX3MIkU0oMOQnrpfgHme8zIqZLX7O5nnjm5Wayw==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
 "@types/retry@^0.12.0":
   version "0.12.1"
   resolved "https://registry.yarnpkg.com/@types/retry/-/retry-0.12.1.tgz#d8f1c0d0dc23afad6dc16a9e993a0865774b4065"
@@ -1740,6 +1757,16 @@
   dependencies:
     "@typescript-eslint/types" "4.33.0"
     eslint-visitor-keys "^2.0.0"
+
+"@unlock-protocol/contracts@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/contracts/-/contracts-0.0.1.tgz#879bbdbbd0c078b0448a460e6889e4bc36861750"
+  integrity sha512-26emZ0RT4Oy+/C5/Pz+XAO1oUkLJ2NW+JJsFgxrXtCX4ZVvFwY+pUHjfBikrg1VmXGIrwtsf9YGQM/1eaRQaCA==
+
+"@unlock-protocol/unlock-js@^0.20.4":
+  version "0.20.4"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.20.4.tgz#934eddbca4335ce71fd70507426b0ad55a3e1380"
+  integrity sha512-MKhWMP64pbp3S5ctlipUgn0BlrL8BwRi2R6OTYGN1FTReSGGyHTx1fZSVIcZF2dkVbOyDllmT6uHEWv6ER0U6Q==
 
 "@walletconnect/browser-utils@^1.6.6":
   version "1.6.6"

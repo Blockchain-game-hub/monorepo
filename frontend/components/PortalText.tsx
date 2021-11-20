@@ -8,6 +8,8 @@ export const textConfig = {
   },
   h2: { fontFamily: "Montaga", fontSize: "70px" },
   h3: { fontFamily: "Montaga", fontSize: "42px" },
+  h4: { fontFamily: "Montaga", fontSize: "36px" },
+
   bigField: { fontFamily: "Inter", fontSize: "20px" },
   p: { fontFamily: "Inter" },
   p2: { fontFamily: "Inter", fontSize: "18px" },
