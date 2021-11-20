@@ -54,7 +54,8 @@ const Components = () => {
         "0x7b8019AE3abaB923e84adfEe8e3859275b8E09c2",
         "0x1469c6Ac177482439830AFeb6E5d6CBA2900aAfD",
       ],
-      keyHolderAddress: loggedInAddress.toLowerCase(),
+      keyHolderAddress:
+        (loggedInAddress && loggedInAddress.toLowerCase()) || "",
     },
     onCompleted: (data) => console.log("rrr", data),
     onError: (err) => console.log(err),
