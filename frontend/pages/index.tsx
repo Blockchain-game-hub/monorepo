@@ -48,9 +48,7 @@ const Home: NextPage = () => {
                 config={textConfig.p2}
                 style={{ textAlign: "center" }}
               >
-                We are building a network where creators can tap into their
-                community to create resilient collectives aligned by social or
-                economic incentives.
+                Portals is programmable money meets programmable media.
               </PortalText>
               <Button
                 onClick={address ? () => router.push("/manage") : connect}
