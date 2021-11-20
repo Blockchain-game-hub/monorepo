@@ -76,7 +76,7 @@ export default function PostModal() {
         }
         formData.append("authorId", auth?.id);
 
-        await fetch("http://localhost:3000/api/post", {
+        await fetch("/api/post", {
           method: "POST",
           body: formData,
           headers: {

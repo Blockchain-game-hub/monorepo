@@ -23,7 +23,7 @@ import EditProfileForm from "./EditProfileForm";
 
 const Navbar = () => {
   const walletContext = useWalletContext();
-  const { address, connect, disconnect } = walletContext;
+  const { address, connect, disconnect, auth } = walletContext;
 
   return (
     <Flex
@@ -57,7 +57,7 @@ const Navbar = () => {
                   </Flex>
                 </MenuButton>
                 <MenuList color="black" bg="white">
-                  <Link href="/portal/anita">
+                  <Link href={`/portal/${auth?.username}`}>
                     <MenuItem>
                       <Icon
                         w={5}

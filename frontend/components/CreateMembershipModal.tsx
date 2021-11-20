@@ -87,6 +87,7 @@ const CreateMembershipModal = ({ isOpen, onClose }) => {
         // This is the hash of the transaction!
         console.log("txn hash", { hash });
         toast({ title: "Successfully created membership" });
+        onClose();
       }
     );
   }

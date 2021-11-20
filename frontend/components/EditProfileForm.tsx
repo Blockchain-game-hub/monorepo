@@ -114,6 +114,8 @@ export default function EditProfileForm() {
           </ModalBody>
           <ModalFooter color="#000">
             <Button
+              bg="white"
+              color="black"
               isLoading={submitting}
               loadingText="Saving"
               onClick={handleSubmit}
