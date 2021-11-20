@@ -1,4 +1,5 @@
 import { 
+    Icon,
     Modal, 
     ModalOverlay, 
     ModalContent, 
@@ -16,12 +17,14 @@ import {
     FormLabel,
     Image,
     Divider,
-    VStack
+    VStack,
+    useDisclosure,
 } from "@chakra-ui/react";
+import { IoDiamondOutline } from "react-icons/io5";
 import React from "react";
 
-
-export default function PostModal(isOpen: boolean, onClose: any) {
+export default function PostModal() {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const initialValues = {
         title: "",
         description: "",
@@ -232,6 +235,17 @@ export default function PostModal(isOpen: boolean, onClose: any) {
     }
 
     return (
+      <>
+      
+      <Button
+        color="black"
+        bg="white"
+        borderRadius="5"
+        onClick={onOpen}
+      >
+        <Icon as={IoDiamondOutline} style={{ marginRight: "0.5em" }} />{" "}
+        Create
+      </Button>
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg="#1F1F1F" color="#FFFFFF">
@@ -254,6 +268,7 @@ export default function PostModal(isOpen: boolean, onClose: any) {
             </ModalFooter>
         </ModalContent>
         </Modal>
+      </>
     );
 }
     
