@@ -1,5 +1,6 @@
 import makeStorageClient from "./storage/client";
 import { getFiles } from "./storage/helpers";
+
 import { PrismaClient } from '@prisma/client';
 import middleware from '../../../middleware';
 import nextConnect from 'next-connect';
@@ -8,8 +9,8 @@ import { jwtVerify } from "../helpers";
 const prisma = new PrismaClient();
 const storageClient = makeStorageClient();
 
-
 const handler = nextConnect();
+
 handler.use(middleware).post(async (
     req,
     res
@@ -26,25 +27,13 @@ handler.use(middleware).post(async (
   } catch (err) {
       console.log(err);
       res.status(500).json(null);
-  }
-}).get(async (req, res) => {
-  try {
-    const posts = await prisma.post.findMany({
-      where: {
-        authorId: parseInt(req.body.authorId)
-      }
-    });
-    res.status(200).json(posts);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(null);
-  }
-});
+    }
+  });
 
 export const config = {
   api: {
-    bodyParser: false
-  }
-}
+    bodyParser: false,
+  },
+};
 
 export default handler;

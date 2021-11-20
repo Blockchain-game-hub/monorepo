@@ -1,25 +1,138 @@
-import React, { useState } from "react";
-import { Flex, Box, Button, Grid } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import {
+  Flex,
+  Box,
+  Button,
+  Grid,
+  Spinner,
+  useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 import moment from "moment";
+import Link from "next/link";
 import ContentCard from "../../components/ContentCard";
 import Navbar from "../../components/Navbar";
 import { creator, contentCards } from "../../utils/mockData";
 import PortalText, { textConfig } from "../../components/PortalText";
 import { capitalizeFirstChar } from "../../utils/strings";
+import { useQuery } from "@apollo/client";
+import { ethers } from "ethers";
+import { WalletService, Web3Service } from "@unlock-protocol/unlock-js";
+import { useWalletContext } from "../../context/wallet";
+import { GET_LOCKS_QUERY } from "../../graphql/unlock";
 
 const Portal = () => {
   const [selectedTab, setSelectedTab] = useState("ALL");
+  const [selectedLock, setSelectedLock] = useState(null);
+  const walletContext = useWalletContext();
+  const [walletService, setWalletService] = useState(null);
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    if (
+      !walletContext ||
+      !walletContext.web3Provider ||
+      !walletContext.provider
+    ) {
+      return;
+    }
+
+    async function setupUnlock() {
+      const provider = await walletContext.provider;
+      const web3Provider = new ethers.providers.Web3Provider(provider);
+
+      const unlockConfig = {
+        4: {
+          unlockAddress: "0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b",
+          provider: web3Provider,
+        },
+      };
+
+      const instance = new WalletService(unlockConfig);
+      await instance.connect(web3Provider);
+
+      setWalletService(instance);
+    }
+
+    setupUnlock();
+  }, [walletContext]);
 
   const renderBackgroundForTier = (tier) => {
     const normalizedTier = tier.toLowerCase();
-    if (normalizedTier === "monthly") {
+    if (normalizedTier.includes("month")) {
       return "radial-gradient(50% 50% at 50% 50%, #BD975D 0%, rgba(38, 37, 37, 0.65) 100%)";
-    } else if (normalizedTier === "yearly") {
+    } else if (
+      normalizedTier.includes("year") ||
+      normalizedTier.includes("annual")
+    ) {
       return "radial-gradient(50% 50% at 50% 50%, #C0BFBF 0%, rgba(38, 37, 37, 0.65) 100%)";
     } else {
       return "radial-gradient(50% 50% at 50% 50%, #B4A737 0%, rgba(38, 37, 37, 0.65) 100%)";
     }
   };
+
+  // TODO: Replace this with addr fetched from backend
+  const creatorAddress = "0x9c16ACA0987EDC05c5b4C4CA01e44a5D80F28457";
+
+  const {
+    loading,
+    data: lockData,
+    error,
+  } = useQuery(GET_LOCKS_QUERY, {
+    variables: {
+      address: creatorAddress,
+    },
+  });
+
+  async function purchaseKey(lockAddress) {
+    try {
+      await walletService.purchaseKey(
+        {
+          lockAddress,
+        },
+        (error, hash) => {
+          // This is the hash of the transaction!
+          console.log({ hash });
+          toast({
+            title: "Successfully Purchased Membership",
+            status: "success",
+          });
+        }
+      );
+    } catch (err) {
+      let title = err.message;
+      if (err.message.includes("insufficient funds")) {
+        title = "Insufficient Funds";
+      }
+      toast({ title, status: "error" });
+    }
+  }
+
+  if (!walletService || loading) {
+    return (
+      <Flex
+        bg="black"
+        flex="1"
+        minHeight="100vh"
+        alignItems="center"
+        justifyContent="center"
+        flexDir="column"
+      >
+        <Spinner mb="10" size="xl" alignSelf="center" />
+        <PortalText size="xl" weight="600">
+          Loading Portal
+        </PortalText>
+      </Flex>
+    );
+  }
 
   return (
     <Flex bg="black" flex="1" minHeight="100vh" flexDir="column">
@@ -133,20 +246,28 @@ const Portal = () => {
             </PortalText>
           </Flex>
           <Flex width="10%" justifyContent="flex-end">
-            <Button
-              mr="10"
-              color="white"
-              bg="none"
-              border="1px solid white"
-              borderRadius="5"
-            >
-              Manage Portal
-            </Button>{" "}
+            <Link href="/manage">
+              <Button
+                mr="10"
+                color="white"
+                bg="none"
+                border="1px solid white"
+                borderRadius="5"
+              >
+                Manage Portal
+              </Button>
+            </Link>
           </Flex>
         </Flex>
         <Flex alignItems="center" justifyContent="center" width="100%">
-          {creator.membershipTiers.map((tier) => (
+          {lockData.locks.map((lock) => (
             <Flex
+              cursor="pointer"
+              onClick={() => {
+                setSelectedLock(lock);
+
+                onOpen();
+              }}
               bg="red"
               m="5"
               height="15em"
@@ -155,13 +276,13 @@ const Portal = () => {
               alignItems="center"
               justifyContent="center"
               borderRadius="50%"
-              background={renderBackgroundForTier(tier.type)}
+              background={renderBackgroundForTier(lock.name)}
             >
               <PortalText weight="500" size="3xl">
-                {tier.price} {tier.currency}
+                {lock.price / 10 ** 18} DAI
               </PortalText>
               <PortalText weight="400" size="xl">
-                {capitalizeFirstChar(tier.type)}
+                {capitalizeFirstChar(lock.name)}
               </PortalText>
             </Flex>
           ))}
@@ -233,6 +354,31 @@ const Portal = () => {
           <ContentCard content={contentCards[3]} showDate={false} />
         </Grid>
       </Flex>
+      {selectedLock && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent bg="#1F1F1F">
+            <ModalHeader>Confirm Purchase</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <PortalText weight="500">
+                You are purchasing the {selectedLock.name} membership for{" "}
+                {selectedLock.price / 10 ** 18} DAI
+              </PortalText>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                color="black"
+                bg="white"
+                onClick={() => purchaseKey(selectedLock.id)}
+              >
+                Purchase
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </Flex>
   );
 };
