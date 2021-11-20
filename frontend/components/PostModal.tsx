@@ -1,47 +1,49 @@
-
-import { 
-    Icon,
-    Modal, 
-    ModalOverlay, 
-    ModalContent, 
-    ModalHeader, 
-    ModalBody, 
-    ModalFooter, 
-    ModalCloseButton, 
-    Button, 
-    Input,
-    Text, 
-    Textarea, 
-    Flex, 
-    Checkbox, 
-    FormControl,
-    FormLabel,
-    Image,
-    Divider,
-    VStack,
-      useToast,
-    useDisclosure,
-
+import {
+  Icon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+  Button,
+  Input,
+  Text,
+  Textarea,
+  Flex,
+  Checkbox,
+  FormControl,
+  FormLabel,
+  Image,
+  Divider,
+  VStack,
+  useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { IoDiamondOutline } from "react-icons/io5";
 import React from "react";
-
+import { useWalletContext } from "../context/wallet";
 
 export default function PostModal() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const initialValues = {
-        title: "",
-        description: "",
-        type: null,
-        file: null,
-        isPrivate: false,
-    };
-    const toast = useToast();
-    const [values, setValues] = React.useState(initialValues)
-    const handleChange = (event) => setValues({ ...values, [event.target.name]: event.target.value });
-    const setFile = (event) => setValues({ ...values, [event.target.name]: event.target.files[0] });
-    const setIsPrivate = (event) => setValues({ ...values, [event.target.name]: event.target.checked });
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const walletContext = useWalletContext();
+  const { auth } = walletContext;
+  const initialValues = {
+    title: "",
+    description: "",
+    type: null,
+    file: null,
+    isPrivate: false,
+  };
+  const toast = useToast();
+  const [values, setValues] = React.useState(initialValues);
+  const handleChange = (event) =>
+    setValues({ ...values, [event.target.name]: event.target.value });
+  const setFile = (event) =>
+    setValues({ ...values, [event.target.name]: event.target.files[0] });
+  const setIsPrivate = (event) =>
+    setValues({ ...values, [event.target.name]: event.target.checked });
 
   // TODO: Add missing membership step
   const steps = ["create", "preview"];
@@ -72,14 +74,16 @@ export default function PostModal() {
         for (const name in values) {
           formData.append(name, values[name]);
         }
-        // TODO: remove hardcoded author
-        formData.append("authorId", "1");
+        formData.append("authorId", auth?.id);
 
-        const res = await fetch("http://localhost:3000/api/post", {
+        await fetch("http://localhost:3000/api/post", {
           method: "POST",
           body: formData,
+          headers: {
+            Authorization: `${auth?.token}`,
+          },
         });
-        // TODO: Show success or error
+
         setSubmitting(false);
         toast({
           status: "success",
@@ -280,42 +284,36 @@ export default function PostModal() {
     }
   };
 
-
-    return (
-      <>
-      
-      <Button
-        color="black"
-        bg="white"
-        borderRadius="5"
-        onClick={onOpen}
-      >
-        <Icon as={IoDiamondOutline} style={{ marginRight: "0.5em" }} />{" "}
-        Create
+  return (
+    <>
+      <Button color="black" bg="white" borderRadius="5" onClick={onOpen}>
+        <Icon as={IoDiamondOutline} style={{ marginRight: "0.5em" }} /> Create
       </Button>
-        <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg="#1F1F1F" color="#FFFFFF">
-            <ModalCloseButton />
-            {renderStep()}
-            <ModalFooter color="#000">
-              {
-                step > 0 ?
-                <Button mr="8px" onClick={()=>setStep(step-1)}>
-                  Back</Button>
-                : <></>
-              }
-              <Button 
-                isLoading={submitting}
-                loadingText="Publishing"
-                onClick={handleSubmit}
-              >
-                  {step === steps.length - 1 ? "Publish Now" : "Next"}
+          <ModalCloseButton />
+          {renderStep()}
+          <ModalFooter color="#000">
+            {step > 0 ? (
+              <Button mr="8px" onClick={() => setStep(step - 1)}>
+                Back
               </Button>
-            </ModalFooter>
+            ) : (
+              <></>
+            )}
+            <Button
+              bg="white"
+              color="black"
+              isLoading={submitting}
+              loadingText="Publishing"
+              onClick={handleSubmit}
+            >
+              {step === steps.length - 1 ? "Publish Now" : "Next"}
+            </Button>
+          </ModalFooter>
         </ModalContent>
-        </Modal>
-      </>
-    );
-
+      </Modal>
+    </>
+  );
 }

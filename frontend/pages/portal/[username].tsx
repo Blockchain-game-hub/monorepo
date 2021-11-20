@@ -27,6 +27,7 @@ import { ethers } from "ethers";
 import { WalletService, Web3Service } from "@unlock-protocol/unlock-js";
 import { useWalletContext } from "../../context/wallet";
 import { GET_LOCKS_QUERY } from "../../graphql/unlock";
+import { useRouter } from "next/router";
 
 const Portal = () => {
   const [selectedTab, setSelectedTab] = useState("ALL");
@@ -35,6 +36,13 @@ const Portal = () => {
   const [walletService, setWalletService] = useState(null);
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
+
+  const { username } = router.query;
+  const { auth } = walletContext;
+  const myUsername = auth?.username;
+
+  const isCreator = username === myUsername;
 
   useEffect(() => {
     if (
@@ -199,16 +207,19 @@ const Portal = () => {
             </Box>
           </Flex>
         </Flex>
+
         <Flex width="10%" justifyContent="flex-end">
-          <Button
-            mr="10"
-            color="white"
-            bg="none"
-            border="1px solid white"
-            borderRadius="5"
-          >
-            Edit Profile
-          </Button>
+          {isCreator ? (
+            <Button
+              mr="10"
+              color="white"
+              bg="none"
+              border="1px solid white"
+              borderRadius="5"
+            >
+              Edit Profile
+            </Button>
+          ) : null}
         </Flex>
       </Flex>
       {false && (
@@ -245,18 +256,21 @@ const Portal = () => {
               Unlock the forum, tasks, and members-only media
             </PortalText>
           </Flex>
+
           <Flex width="10%" justifyContent="flex-end">
-            <Link href="/manage">
-              <Button
-                mr="10"
-                color="white"
-                bg="none"
-                border="1px solid white"
-                borderRadius="5"
-              >
-                Manage Portal
-              </Button>
-            </Link>
+            {isCreator ? (
+              <Link href="/manage">
+                <Button
+                  mr="10"
+                  color="white"
+                  bg="none"
+                  border="1px solid white"
+                  borderRadius="5"
+                >
+                  Manage Portal
+                </Button>
+              </Link>
+            ) : null}
           </Flex>
         </Flex>
         <Flex alignItems="center" justifyContent="center" width="100%">
