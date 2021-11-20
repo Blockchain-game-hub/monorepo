@@ -1,14 +1,18 @@
-import React, { useContext, useReducer, useEffect, useCallback } from "react";
+import React, { useContext, useReducer, useEffect, useCallback, useState } from "react";
 import WalletLink from "walletlink";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
+import { authRequest } from "../utils/apiRequests";
+
+const LS_KEY = 'portals:auth';
 
 const initialState = {
   provider: null,
   web3Provider: null,
   address: null,
   chainId: null,
+  auth: {}
 };
 
 const WalletContext = React.createContext({
@@ -90,6 +94,11 @@ function reducer(state, action) {
         ...state,
         chainId: action.chainId,
       };
+    case "SET_AUTH":
+      return {
+        ...state,
+        auth: action.auth,
+      };
     case "RESET_WEB3_PROVIDER":
       return initialState;
     default:
@@ -113,6 +122,21 @@ const WalletProvider = ({ children }) => {
     const signer = web3Provider.getSigner();
     const address = await signer.getAddress();
     const network = await web3Provider.getNetwork();
+    // Generate a nonce and sign a transaction to verify the user
+    try {
+      const setAuth = (auth) => {
+        dispatch({
+          type: "SET_AUTH",
+          auth: auth,
+        });
+      };
+      await authRequest(address, signer, setAuth);
+      localStorage.setItem(LS_KEY, JSON.stringify(state.auth));
+    } catch (error) {
+      console.log(error);
+      disconnect();
+      return;
+    }
 
     dispatch({
       type: "SET_WEB3_PROVIDER",
@@ -132,6 +156,7 @@ const WalletProvider = ({ children }) => {
       dispatch({
         type: "RESET_WEB3_PROVIDER",
       });
+      localStorage.removeItem(LS_KEY);
     },
     [provider]
   );

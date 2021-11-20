@@ -1,5 +1,4 @@
-import React from "react";
-
+import React from "react";  
 import {
   Flex,
   Icon,
@@ -10,22 +9,21 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  useDisclosure,
 } from "@chakra-ui/react";
 import PortalText from "./PortalText";
 import Gravatar from "react-gravatar";
 import { useWalletContext } from "../context/wallet";
 import Link from "next/link";
-import { IoDiamondOutline, IoGridOutline } from "react-icons/io5";
+import { IoGridOutline } from "react-icons/io5";
 import { FiLogOut, FiHelpCircle } from "react-icons/fi";
 import { FaRegUserCircle } from "react-icons/fa";
 import { truncateAddress } from "../utils/address";
 import PostModal from "./PostModal";
+import EditProfileForm from "./EditProfileForm";
 
 const Navbar = () => {
   const walletContext = useWalletContext();
   const { address, connect, disconnect } = walletContext;
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Flex
@@ -51,7 +49,7 @@ const Navbar = () => {
                 <MenuButton color="black" bg="white" mr="5" as={Button}>
                   <Flex alignItems="center">
                     <Gravatar
-                      size="30"
+                      size={30}
                       style={{ borderRadius: "999px" }}
                       email={address}
                     />
@@ -59,6 +57,7 @@ const Navbar = () => {
                   </Flex>
                 </MenuButton>
                 <MenuList color="black" bg="white">
+                  <EditProfileForm />
                   <MenuItem>
                     <Icon
                       w={5}
@@ -97,15 +96,7 @@ const Navbar = () => {
                   </MenuItem>
                 </MenuList>
               </Menu>
-              <Button
-                color="black"
-                bg="white"
-                borderRadius="5"
-                onClick={onOpen}
-              >
-                <Icon as={IoDiamondOutline} style={{ marginRight: "0.5em" }} />{" "}
-                Create
-              </Button>
+            <PostModal />
             </Flex>
           ) : (
             <Button color="black" bg="white" borderRadius="5" onClick={connect}>
@@ -114,7 +105,6 @@ const Navbar = () => {
           )}
         </Box>
 
-        {PostModal(isOpen, onClose)}
       </Flex>
     </Flex>
   );

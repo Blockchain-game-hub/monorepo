@@ -15,10 +15,12 @@ datasource db {
 model User {
   id            Int      @id @default(autoincrement())
   createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  username      String   @unique @db.VarChar(255)
+  updatedAt     DateTime @updatedAt @default(now())
+  username      String?
   name          String?
-  email         String?  @unique
+  email         String?
+  nonce         Int      @default(dbgenerated("floor(random()*1000000000)"))
+  address       String   @unique @db.VarChar(64)
   avatarURL     String?
   coverPhotoURL String?
   followedBy    Follow[] @relation("follower")
