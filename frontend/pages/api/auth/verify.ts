@@ -25,7 +25,8 @@ export default async function handler(
         id: updateUser.id,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      // 1 Year = 8760 hours
+      { expiresIn: "8760h" }
     );
     res.status(200).json({
       id: updateUser.id,
