@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import {
-  Button,
-  Grid,
-  Container,
-} from "@chakra-ui/react";
+import { Heading, Button, Flex, Grid, Container } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import ContentCard from "../components/ContentCard";
 import PortalText, { textConfig } from "../components/PortalText";
