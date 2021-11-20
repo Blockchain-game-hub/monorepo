@@ -19,7 +19,7 @@ const PortalText = ({
   config = textConfig.p,
   children,
   size,
-  weight,
+  weight = 600,
   color,
   style,
 }) => {
