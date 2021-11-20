@@ -15,6 +15,7 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
+
 import moment from "moment";
 import Link from "next/link";
 import ContentCard from "../../components/ContentCard";
@@ -31,6 +32,7 @@ import { useRouter } from "next/router";
 
 const Portal = () => {
   const [selectedTab, setSelectedTab] = useState("ALL");
+  const [portalData, setPortalData] = useState(null);
   const [selectedLock, setSelectedLock] = useState(null);
   const walletContext = useWalletContext();
   const [walletService, setWalletService] = useState(null);
@@ -43,6 +45,25 @@ const Portal = () => {
   const myUsername = auth?.username;
 
   const isCreator = username === myUsername;
+
+  useEffect(() => {
+    if (!username) {
+      return;
+    }
+    async function fetchPortalData() {
+      try {
+        const response = await fetch(`/api/portal/${username}`, {
+          method: "GET",
+        });
+        const result = await response.json();
+        setPortalData(result);
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
+
+    fetchPortalData();
+  }, [username]);
 
   useEffect(() => {
     if (
@@ -73,22 +94,17 @@ const Portal = () => {
     setupUnlock();
   }, [walletContext]);
 
-  const renderBackgroundForTier = (tier) => {
-    const normalizedTier = tier.toLowerCase();
-    if (normalizedTier.includes("month")) {
+  const renderBackgroundForTier = (duration) => {
+    if (duration === "30") {
       return "radial-gradient(50% 50% at 50% 50%, #BD975D 0%, rgba(38, 37, 37, 0.65) 100%)";
-    } else if (
-      normalizedTier.includes("year") ||
-      normalizedTier.includes("annual")
-    ) {
+    } else if (duration === "365") {
       return "radial-gradient(50% 50% at 50% 50%, #C0BFBF 0%, rgba(38, 37, 37, 0.65) 100%)";
     } else {
       return "radial-gradient(50% 50% at 50% 50%, #B4A737 0%, rgba(38, 37, 37, 0.65) 100%)";
     }
   };
 
-  // TODO: Replace this with addr fetched from backend
-  const creatorAddress = "0x9c16ACA0987EDC05c5b4C4CA01e44a5D80F28457";
+  const creatorAddress = portalData?.user?.address;
 
   const {
     loading,
@@ -98,6 +114,7 @@ const Portal = () => {
     variables: {
       address: creatorAddress,
     },
+    skip: !creatorAddress,
   });
 
   async function purchaseKey(lockAddress) {
@@ -124,7 +141,7 @@ const Portal = () => {
     }
   }
 
-  if (!walletService || loading) {
+  if (!walletService || loading || !portalData || !lockData) {
     return (
       <Flex
         bg="black"
@@ -142,97 +159,22 @@ const Portal = () => {
     );
   }
 
-  return (
-    <Flex bg="black" flex="1" minHeight="100vh" flexDir="column">
-      <Navbar />
-      <Flex
-        justifyContent="center"
-        width="100%"
-        height="35vh"
-        position="relative"
-      >
-        <Flex
-          width="100%"
-          height="85%"
-          backgroundImage={creator.coverPhotoURL}
-          backgroundSize="cover"
-          backgroundPosition="center"
-          backgroundRepeat="no-repeat"
-          position="absolute"
-        />
-        <Flex
-          zIndex="2"
-          height="12em"
-          width="12em"
-          alignSelf="flex-end"
-          backgroundImage={creator.avatarURL}
-          backgroundSize="cover"
-          backgroundPosition="center"
-          backgroundRepeat="no-repeat"
-          borderRadius="50%"
-          border="1em solid black"
-        />
-      </Flex>
+  console.log(portalData?.posts);
 
-      <Flex
-        flexDirection="row"
-        width="100%"
-        minHeight="10em"
-        pb="10"
-        justifyContent="center"
-      >
-        <Flex width="10%" />
-        <Flex width="80%" flexDirection="column" alignItems="center">
-          <PortalText style={{ textAlign: "center" }} config={textConfig.h2}>
-            {creator.name}
-          </PortalText>
-          <PortalText
-            size="lg"
-            style={{ maxWidth: "25em", textAlign: "center" }}
-            config={textConfig.p}
-          >
-            {creator.bio}
-          </PortalText>
-          <Flex mt="5" flexDirection="row">
-            <Box>
-              <PortalText>{creator.location}</PortalText>
-            </Box>
-            <Box ml="10" mr="10">
-              <PortalText>
-                Joined {moment(creator.joinedAt).format("MMMM YYYY")}
-              </PortalText>
-            </Box>
-            <Box>
-              <PortalText>{creator.website}</PortalText>
-            </Box>
-          </Flex>
-        </Flex>
+  const renderTierName = (duration) => {
+    if (duration === "30") {
+      return "1 Month";
+    } else if (duration === "365") {
+      return "1 Year";
+    }
+    return "Lifetime";
+  };
 
-        <Flex width="10%" justifyContent="flex-end">
-          {isCreator ? (
-            <Button
-              mr="10"
-              color="white"
-              bg="none"
-              border="1px solid white"
-              borderRadius="5"
-            >
-              Edit Profile
-            </Button>
-          ) : null}
-        </Flex>
-      </Flex>
-      {false && (
-        <Flex
-          flexDirection="row"
-          width="100%"
-          minHeight="20em"
-          justifyContent="center"
-        >
-          {/* TODO: Add carousel showcasing content here */}
-        </Flex>
-      )}
-
+  const renderMembershipOptions = () => {
+    if (Object.keys(lockData.locks).length === 0) {
+      return <div />;
+    }
+    return (
       <Flex
         pb="10"
         flexDirection="column"
@@ -247,17 +189,17 @@ const Portal = () => {
           pt="10"
           justifyContent="space-between"
         >
-          <Flex width="10%" />
-          <Flex width="80%" flexDirection="column" alignItems="center">
+          <Flex flex="1" />
+          <Flex flex="3" flexDirection="column" alignItems="center">
             <PortalText config={textConfig.h3}>
-              Join {creator.name}'s Portal{" "}
+              Join {portalData?.user?.name}'s Portal{" "}
             </PortalText>
             <PortalText config={textConfig.p}>
               Unlock the forum, tasks, and members-only media
             </PortalText>
           </Flex>
 
-          <Flex width="10%" justifyContent="flex-end">
+          <Flex flex="1" justifyContent="flex-end">
             {isCreator ? (
               <Link href="/manage">
                 <Button
@@ -282,7 +224,6 @@ const Portal = () => {
 
                 onOpen();
               }}
-              bg="red"
               m="5"
               height="15em"
               width="15em"
@@ -290,18 +231,122 @@ const Portal = () => {
               alignItems="center"
               justifyContent="center"
               borderRadius="50%"
-              background={renderBackgroundForTier(lock.name)}
+              background={renderBackgroundForTier(lock.expirationDuration)}
             >
               <PortalText weight="500" size="3xl">
                 {lock.price / 10 ** 18} DAI
               </PortalText>
               <PortalText weight="400" size="xl">
-                {capitalizeFirstChar(lock.name)}
+                {renderTierName(lock.expirationDuration)}
               </PortalText>
             </Flex>
           ))}
         </Flex>
       </Flex>
+    );
+  };
+  return (
+    <Flex bg="black" flex="1" minHeight="100vh" flexDir="column">
+      <Navbar />
+      <Flex
+        justifyContent="center"
+        width="100%"
+        height="35vh"
+        position="relative"
+      >
+        <Flex
+          width="100%"
+          height="85%"
+          backgroundImage={
+            portalData?.user?.coverPhotoURL || creator.coverPhotoURL
+          }
+          backgroundSize="cover"
+          backgroundPosition="center"
+          backgroundRepeat="no-repeat"
+          position="absolute"
+        />
+        <Flex
+          zIndex="2"
+          height="12em"
+          width="12em"
+          alignSelf="flex-end"
+          backgroundImage={
+            portalData?.user?.avatarURL ||
+            "linear-gradient(135deg, rgb(82, 63, 239), rgb(253, 34, 173));"
+          }
+          backgroundSize="cover"
+          backgroundPosition="center"
+          backgroundRepeat="no-repeat"
+          borderRadius="50%"
+          border="1em solid black"
+        />
+      </Flex>
+
+      <Flex
+        flexDirection="row"
+        width="100%"
+        minHeight="10em"
+        pb="10"
+        justifyContent="center"
+      >
+        <Flex flex="1" />
+        <Flex flex="3" flexDirection="column" alignItems="center">
+          <PortalText style={{ textAlign: "center" }} config={textConfig.h2}>
+            {portalData?.user?.name}
+          </PortalText>
+          <PortalText
+            size="lg"
+            style={{ maxWidth: "25em", textAlign: "center" }}
+            config={textConfig.p}
+          >
+            {portalData?.user?.bio}
+          </PortalText>
+          <Flex mt="5" flexDirection="row">
+            <Box>
+              <PortalText>{portalData?.user?.location}</PortalText>
+            </Box>
+            <Box ml="10" mr="10">
+              <PortalText>
+                Joined {moment(portalData?.user?.joinedAt).format("MMMM YYYY")}
+              </PortalText>
+            </Box>
+            <Box>
+              <Link passHref={true} href={portalData?.user?.website}>
+                <a target="_blank">
+                  <PortalText>{portalData?.user?.website}</PortalText>
+                </a>
+              </Link>
+            </Box>
+          </Flex>
+        </Flex>
+
+        <Flex flex="1" justifyContent="flex-end">
+          {isCreator ? (
+            <Button
+              mr="10"
+              color="white"
+              bg="none"
+              width="fit-content"
+              border="1px solid white"
+              borderRadius="5"
+            >
+              Edit Profile
+            </Button>
+          ) : null}
+        </Flex>
+      </Flex>
+      {false && (
+        <Flex
+          flexDirection="row"
+          width="100%"
+          minHeight="20em"
+          justifyContent="center"
+        >
+          {/* TODO: Add carousel showcasing content here */}
+        </Flex>
+      )}
+
+      {renderMembershipOptions()}
       <Flex
         flexDirection="column"
         width="100%"
@@ -361,11 +406,9 @@ const Portal = () => {
           gap={10}
           paddingTop="30px"
         >
-          {/* TODO: Add tab bar to select All | Public | Members Only */}
-          <ContentCard content={contentCards[0]} showDate={false} />
-          <ContentCard content={contentCards[1]} showDate={false} />
-          <ContentCard content={contentCards[2]} showDate={false} />
-          <ContentCard content={contentCards[3]} showDate={false} />
+          {portalData?.posts.map((post) => {
+            return <ContentCard content={post} showDate={true} />;
+          })}
         </Grid>
       </Flex>
       {selectedLock && (

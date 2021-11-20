@@ -17,7 +17,28 @@ export default async function handler(
         },
       });
 
-      res.status(200).json(user);
+      const posts = await prisma.post.findMany({
+        where: {
+          authorId: user?.id,
+        },
+      });
+
+      const formattedPosts = posts.map((post) => ({
+        ...post,
+        author: user?.name || "",
+        username: user?.username || "",
+        publishedAt: post?.createdAt,
+        membersOnly: post?.isPrivate,
+        avatarURL: user?.avatarURL,
+        uuid: post?.id,
+      }));
+
+      const response = {
+        user,
+        posts: formattedPosts,
+      };
+
+      res.status(200).json(response);
     } else {
       res.status(400).json(null);
     }
