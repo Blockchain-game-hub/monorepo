@@ -50,28 +50,39 @@ const Home: NextPage = () => {
         </Head>
 
         <main className={styles.main}>
-          <PortalText
-            config={textConfig.h2}
-            style={{ textAlign: "center", lineHeight: "1.2" }}
+          <Flex
+            width="100%"
+            backgroundImage="/images/ASU.gif"
+            flexDirection="column"
+            backgroundPosition="bottom"
+            pb="10"
           >
-            Create a portal into your world
-          </PortalText>
-          <Container maxW="container.md" paddingTop="20px" centerContent>
-            <PortalText config={textConfig.p2} style={{ textAlign: "center" }}>
-              We are building a network where creators can tap into their
-              community to create resilient collectives aligned by social or
-              economic incentives.
-            </PortalText>
-            <Button
-              onClick={address ? () => router.push("/manage") : connect}
-              color="black"
-              bg="white"
-              borderRadius="5"
-              marginTop="26px"
+            <PortalText
+              config={textConfig.h2}
+              style={{ textAlign: "center", lineHeight: "1.2" }}
             >
-              Create a Portal
-            </Button>
-          </Container>
+              Create a portal into your world
+            </PortalText>
+            <Container maxW="container.md" paddingTop="20px" centerContent>
+              <PortalText
+                config={textConfig.p2}
+                style={{ textAlign: "center" }}
+              >
+                We are building a network where creators can tap into their
+                community to create resilient collectives aligned by social or
+                economic incentives.
+              </PortalText>
+              <Button
+                onClick={address ? () => router.push("/manage") : connect}
+                color="black"
+                bg="white"
+                borderRadius="5"
+                marginTop="26px"
+              >
+                Create a Portal
+              </Button>
+            </Container>
+          </Flex>
           <Grid
             templateColumns={[
               "repeat(1, 1fr)",
