@@ -54,8 +54,11 @@ const Home: NextPage = () => {
             width="100%"
             backgroundImage="/images/ASU.gif"
             flexDirection="column"
-            backgroundPosition="bottom"
-            pb="10"
+            backgroundPosition="center"
+            backgroundSize="35%"
+            backgroundRepeat="no-repeat"
+            pt="10em"
+            pb="10em"
           >
             <PortalText
               config={textConfig.h2}
