@@ -3,7 +3,7 @@ import WalletLink from "walletlink";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
-import { authRequest } from "../utils/apiRequests";
+import { authRequest } from "../utils/authRequests";
 
 const LS_KEY = 'portals:auth';
 

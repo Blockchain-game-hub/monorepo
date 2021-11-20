@@ -15,8 +15,6 @@ export default async function handler(
     const allUsers = await prisma.user.findMany();
     res.status(200).json(allUsers[0]);
   } else if (req.method === "PUT") {
-    return new Promise<void>((resolve, reject) =>
-    {
       jwtVerify(res, req.headers.authorization, async (err, decoded) => {
         const user = await prisma.user.update({
           where: { id: decoded.id },
@@ -28,7 +26,6 @@ export default async function handler(
         });
         res.status(200).json(user);
       });
-    });
   } else {
   }
 }

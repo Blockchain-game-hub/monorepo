@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { FaPencilAlt } from "react-icons/fa";
 import PortalText from "./PortalText";
-import React from "react";
+import React, { useEffect } from "react";
 import { useWalletContext } from "../context/wallet";
 
 export default function EditProfileForm() {
@@ -28,6 +28,15 @@ export default function EditProfileForm() {
         username: auth.username ? auth.username : "",
         email: auth.email ? auth.email : "",
     };
+    useEffect(() => {
+      if (!auth) { return }
+      const initialValues = {
+          name: auth.name ? auth.name : "",
+          username: auth.username ? auth.username : "",
+          email: auth.email ? auth.email : "",
+      };
+      setValues(initialValues)
+    }, [auth])
     const [values, setValues] = React.useState(initialValues)
     const handleChange = (event) => setValues({ ...values, [event.target.name]: event.target.value });
     const [submitting, setSubmitting] = React.useState(false);
@@ -36,15 +45,16 @@ export default function EditProfileForm() {
     // TODO: Show error message on input fields
     const handleSubmit = async () => {
         setSubmitting(true);
-          const res = await fetch("/api/user", {
-              method: "PUT",
-              headers: {
-                    "Authorization": `${auth.token}`
-                },
-              body: values,
-          });
-          // TODO: Show success or error
-          setSubmitting(false);
+        await fetch("/api/user", {
+            method: "PUT",
+            headers: {
+                "Authorization": `${auth.token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(values),
+        }).catch(err => console.log(err));
+        // TODO: Show success or error
+        setSubmitting(false);
     };
 
     return (
@@ -74,7 +84,6 @@ export default function EditProfileForm() {
                                 value={values.name}
                                 onChange={handleChange}
                                 placeholder="What is your name"
-                                size="sm"
                                 mb="8px"
                             />
                         </FormControl>

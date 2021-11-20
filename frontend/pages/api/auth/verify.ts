@@ -25,6 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             address: updateUser.address,
             name: updateUser.name,
             email: updateUser.email,
+            username: updateUser.username,
             token
         });
     } else  {
