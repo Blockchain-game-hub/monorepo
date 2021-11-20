@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { LS_KEY } from "../context/wallet";
 const verifyRequest = async (
   address: string,
   signature: string,
@@ -9,7 +10,7 @@ const verifyRequest = async (
     `/api/auth/verify?address=${address}&signature=${signature}&nonce=${nonce}`
   );
   const data = await response.json();
-  console.log("Data", data);
+  localStorage.setItem(LS_KEY, JSON.stringify(data));
   setAuth(data);
 };
 
