@@ -1,18 +1,24 @@
-import React, { useContext, useReducer, useEffect, useCallback, useState } from "react";
+import React, {
+  useContext,
+  useReducer,
+  useEffect,
+  useCallback,
+  useState,
+} from "react";
 import WalletLink from "walletlink";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import { authRequest } from "../utils/authRequests";
 
-const LS_KEY = 'portals:auth';
+export const LS_KEY = "portals:auth";
 
 const initialState = {
   provider: null,
   web3Provider: null,
   address: null,
   chainId: null,
-  auth: {}
+  auth: {},
 };
 
 const WalletContext = React.createContext({
@@ -124,6 +130,22 @@ const WalletProvider = ({ children }) => {
     const network = await web3Provider.getNetwork();
     // Generate a nonce and sign a transaction to verify the user
     try {
+      const persistedJWT = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+
+      if (persistedJWT && Object.keys(persistedJWT).length !== 0) {
+        dispatch({
+          type: "SET_AUTH",
+          auth: persistedJWT,
+        });
+        dispatch({
+          type: "SET_WEB3_PROVIDER",
+          provider,
+          web3Provider,
+          address,
+          chainId: network.chainId,
+        });
+        return;
+      }
       const setAuth = (auth) => {
         dispatch({
           type: "SET_AUTH",
@@ -131,7 +153,6 @@ const WalletProvider = ({ children }) => {
         });
       };
       await authRequest(address, signer, setAuth);
-      localStorage.setItem(LS_KEY, JSON.stringify(state.auth));
     } catch (error) {
       console.log(error);
       disconnect();
