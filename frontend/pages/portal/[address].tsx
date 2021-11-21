@@ -325,7 +325,7 @@ const Portal = () => {
         </Flex>
 
         <Flex flex="1" justifyContent="flex-end">
-          {isCreator ? (
+          {/* {isCreator ? (
             <Button
               mr="10"
               color="white"
@@ -336,7 +336,7 @@ const Portal = () => {
             >
               Edit Profile
             </Button>
-          ) : null}
+          ) : null} */}
         </Flex>
       </Flex>
       {false && (

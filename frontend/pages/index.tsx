@@ -108,10 +108,23 @@ const Home: NextPage = () => {
         <Flex bg="#333333" flexDirection="column" alignItems="center" p="5">
           <Flex mb="2" justifyContent="center" width="100%" height="3vh">
             <Flex mr="5">
-              <PortalText weight="400">About</PortalText>
+              <Link
+                href="https://showcase.ethglobal.com/web3jam/portals"
+                passHref={true}
+              >
+                <a target="_blank">
+                  <PortalText cursor="pointer" weight="400">
+                    About
+                  </PortalText>
+                </a>
+              </Link>
             </Flex>
             <Flex>
-              <PortalText weight="400">Chat</PortalText>
+              <Link href="https://discord.gg/dgFQUny5RZ" passHref={true}>
+                <a target="_blank">
+                  <PortalText weight="400">Discord</PortalText>
+                </a>
+              </Link>
             </Flex>
           </Flex>
           <PortalText weight="400">© 2021 Portals DAO</PortalText>
