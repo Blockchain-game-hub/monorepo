@@ -130,6 +130,7 @@ const Portal = () => {
             title: "Successfully Purchased Membership",
             status: "success",
           });
+          onClose();
         }
       );
     } catch (err) {
