@@ -30,9 +30,9 @@ handler
           description: req.body.description[0],
         };
 
-        console.log("video, ", req?.body?.duration);
+        if (req.body.type[0] === "VIDEO" && req?.body?.duration) {
+          console.log("video, ", req?.body?.duration);
 
-        if (req.body.type[0] === "VIDEO") {
           data = {
             ...data,
             duration: req?.body?.duration ? req?.body?.duration[0] : "00:00:05",
