@@ -29,6 +29,25 @@ import { useWalletContext } from "../../context/wallet";
 import { GET_LOCKS_QUERY } from "../../graphql/unlock";
 import { useRouter } from "next/router";
 
+export const renderTierName = (duration) => {
+  if (duration === "30") {
+    return "1 Month";
+  } else if (duration === "365") {
+    return "1 Year";
+  }
+  return "Lifetime";
+};
+
+export const renderBackgroundForTier = (duration) => {
+  if (duration === "30") {
+    return "radial-gradient(50% 50% at 50% 50%, #BD975D 0%, rgba(38, 37, 37, 0.65) 100%)";
+  } else if (duration === "365") {
+    return "radial-gradient(50% 50% at 50% 50%, #C0BFBF 0%, rgba(38, 37, 37, 0.65) 100%)";
+  } else {
+    return "radial-gradient(50% 50% at 50% 50%, #B4A737 0%, rgba(38, 37, 37, 0.65) 100%)";
+  }
+};
+
 const Portal = () => {
   const [selectedTab, setSelectedTab] = useState("ALL");
   const [portalData, setPortalData] = useState(null);
@@ -93,16 +112,6 @@ const Portal = () => {
     setupUnlock();
   }, [walletContext]);
 
-  const renderBackgroundForTier = (duration) => {
-    if (duration === "30") {
-      return "radial-gradient(50% 50% at 50% 50%, #BD975D 0%, rgba(38, 37, 37, 0.65) 100%)";
-    } else if (duration === "365") {
-      return "radial-gradient(50% 50% at 50% 50%, #C0BFBF 0%, rgba(38, 37, 37, 0.65) 100%)";
-    } else {
-      return "radial-gradient(50% 50% at 50% 50%, #B4A737 0%, rgba(38, 37, 37, 0.65) 100%)";
-    }
-  };
-
   const creatorAddress = portalData?.user?.address;
 
   const {
@@ -158,15 +167,6 @@ const Portal = () => {
       </Flex>
     );
   }
-
-  const renderTierName = (duration) => {
-    if (duration === "30") {
-      return "1 Month";
-    } else if (duration === "365") {
-      return "1 Year";
-    }
-    return "Lifetime";
-  };
 
   const renderMembershipOptions = () => {
     if (Object.keys(lockData.locks).length === 0) {
