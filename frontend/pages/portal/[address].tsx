@@ -130,6 +130,7 @@ const Portal = () => {
             title: "Successfully Purchased Membership",
             status: "success",
           });
+          onClose();
         }
       );
     } catch (err) {
@@ -158,8 +159,6 @@ const Portal = () => {
       </Flex>
     );
   }
-
-  console.log(portalData?.posts);
 
   const renderTierName = (duration) => {
     if (duration === "30") {
@@ -312,7 +311,12 @@ const Portal = () => {
               </PortalText>
             </Box>
             <Box>
-              <Link passHref={true} href={portalData?.user?.website ? portalData?.user?.website : ""}>
+              <Link
+                passHref={true}
+                href={
+                  portalData?.user?.website ? portalData?.user?.website : ""
+                }
+              >
                 <a target="_blank">
                   <PortalText>{portalData?.user?.website}</PortalText>
                 </a>
@@ -356,7 +360,7 @@ const Portal = () => {
         paddingBottom="20"
       >
         <Flex pt="5" pl="10" width="100%" alignItems="flex-start">
-          <Box onClick={() => setSelectedTab("ALL")}>
+          <Box cursor="pointer" onClick={() => setSelectedTab("ALL")}>
             <PortalText
               style={{
                 ...(selectedTab === "ALL"
@@ -370,7 +374,7 @@ const Portal = () => {
               All
             </PortalText>
           </Box>
-          <Box onClick={() => setSelectedTab("PUBLIC")}>
+          <Box cursor="pointer" onClick={() => setSelectedTab("PUBLIC")}>
             <PortalText
               style={{
                 ...(selectedTab === "PUBLIC"
@@ -384,7 +388,7 @@ const Portal = () => {
               Public
             </PortalText>
           </Box>
-          <Box onClick={() => setSelectedTab("MEMBERS")}>
+          <Box cursor="pointer" onClick={() => setSelectedTab("MEMBERS")}>
             <PortalText
               style={{
                 ...(selectedTab === "MEMBERS"
@@ -407,9 +411,23 @@ const Portal = () => {
           gap={10}
           paddingTop="30px"
         >
-          {portalData?.posts.map((post) => {
-            return <ContentCard key={post.id} content={post} showDate={true} />;
-          })}
+          {portalData?.posts
+            .filter((post) => {
+              if (selectedTab === "ALL") {
+                return true;
+              } else if (selectedTab === "MEMBERS" && post?.isPrivate) {
+                return true;
+              } else if (selectedTab === "PUBLIC" && !post?.isPrivate) {
+                return true;
+              } else {
+                return false;
+              }
+            })
+            .map((post) => {
+              return (
+                <ContentCard key={post.id} content={post} showDate={true} />
+              );
+            })}
         </Grid>
       </Flex>
       {selectedLock && (
