@@ -29,7 +29,7 @@ export default async function handler(
         username: user?.username || "",
         address: user?.address || "",
         publishedAt: post?.createdAt,
-        membersOnly: post?.isPrivate,
+        isPrivate: post?.isPrivate,
         avatarURL: user?.avatarURL,
         uuid: post?.id,
       }));

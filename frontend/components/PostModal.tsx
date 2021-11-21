@@ -1,49 +1,50 @@
-import {
-  Icon,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalCloseButton,
-  Button,
-  Input,
-  Text,
-  Textarea,
-  Flex,
-  Checkbox,
-  FormControl,
-  FormLabel,
-  Image,
-  Divider,
-  VStack,
-  useToast,
-  useDisclosure,
+
+import { 
+    Icon,
+    Modal, 
+    ModalOverlay, 
+    ModalContent, 
+    ModalHeader, 
+    ModalBody, 
+    ModalFooter, 
+    ModalCloseButton, 
+    Button, 
+    Input,
+    Text, 
+    Textarea, 
+    Flex, 
+    Checkbox, 
+    FormControl,
+    FormLabel,
+    Image,
+    Divider,
+    VStack,
+    useToast,
+    useDisclosure,
+
 } from "@chakra-ui/react";
 import { IoDiamondOutline } from "react-icons/io5";
 import React from "react";
 import { useWalletContext } from "../context/wallet";
 
+
 export default function PostModal() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const walletContext = useWalletContext();
-  const { auth } = walletContext;
-  const initialValues = {
-    title: "",
-    description: "",
-    type: null,
-    file: null,
-    isPrivate: false,
-  };
-  const toast = useToast();
-  const [values, setValues] = React.useState(initialValues);
-  const handleChange = (event) =>
-    setValues({ ...values, [event.target.name]: event.target.value });
-  const setFile = (event) =>
-    setValues({ ...values, [event.target.name]: event.target.files[0] });
-  const setIsPrivate = (event) =>
-    setValues({ ...values, [event.target.name]: event.target.checked });
+    const walletContext = useWalletContext();
+    const { auth } = walletContext;
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const initialValues = {
+        title: "",
+        description: "",
+        type: null,
+        file: null,
+        isPrivate: false,
+    };
+    const toast = useToast();
+    const [values, setValues] = React.useState(initialValues)
+    const handleChange = (event) => setValues({ ...values, [event.target.name]: event.target.value });
+    const setFile = (event) => setValues({ ...values, [event.target.name]: event.target.files[0] });
+    const setIsPrivate = (event) => setValues({ ...values, [event.target.name]: event.target.checked });
+
 
   // TODO: Add missing membership step
   const steps = ["create", "preview"];
@@ -78,19 +79,27 @@ export default function PostModal() {
 
         await fetch("/api/post", {
           method: "POST",
-          body: formData,
           headers: {
-            Authorization: `${auth?.token}`,
+              "Authorization": `${auth.token}`
           },
+          body: formData,
+        }).then((res) => {
+          if (res.status === 200) {
+            toast({
+              status: "success",
+              title: "Successfully Uploaded Post to IPFS",
+            });
+            onClose();
+          } else {
+            toast({
+              status: "error",
+              title: "Error Uploading Post to IPFS",
+            });
+          }
+          setSubmitting(false);
+          setStep(0);
+          onClose();
         });
-
-        setSubmitting(false);
-        toast({
-          status: "success",
-          title: "Successfully Uploaded Post to IPFS",
-        });
-        setStep(0);
-        onClose();
       } else {
         alert("Please confirm that you want to publish");
       }

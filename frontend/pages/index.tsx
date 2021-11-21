@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -9,12 +9,35 @@ import PortalText, { textConfig } from "../components/PortalText";
 import { useWalletContext } from "../context/wallet";
 import { useRouter } from "next/router";
 
-import { contentCards } from "../utils/mockData";
-
 const Home: NextPage = () => {
   const walletContext = useWalletContext();
-  const { address, connect, disconnect } = walletContext;
+  const { auth, address, connect, disconnect } = walletContext;
+  const [posts, setPosts] = useState([]);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!address) {
+      return;
+    }
+    async function fetchPostData() {
+      try {
+        const response = await fetch('/api/post', {
+          method: "GET",
+          headers: {
+              "Authorization": `${auth?.token}`,
+              "Content-Type": "application/json",
+          },
+        });
+        const result = await response.json();
+        setPosts(result);
+        console.log(posts)
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
+
+    fetchPostData();
+  }, [address]);
 
   return (
     <div style={{ background: "black" }}>
@@ -72,10 +95,9 @@ const Home: NextPage = () => {
             gap={5}
             paddingTop="60px"
           >
-            <ContentCard content={contentCards[0]} showDate={false} />
-            <ContentCard content={contentCards[1]} showDate={false} />
-            <ContentCard content={contentCards[2]} showDate={false} />
-            <ContentCard content={contentCards[3]} showDate={false} />
+            {posts.map((post) => {
+              return <ContentCard key={post.id} content={post} showDate={true} />;
+            })}
           </Grid>
         </main>
       </div>
