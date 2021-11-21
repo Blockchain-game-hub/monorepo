@@ -103,6 +103,20 @@ const Home: NextPage = () => {
           </Grid>
         </main>
       </div>
+
+      <footer>
+        <Flex bg="#333333" flexDirection="column" alignItems="center" p="5">
+          <Flex mb="2" justifyContent="center" width="100%" height="3vh">
+            <Flex mr="5">
+              <PortalText weight="400">About</PortalText>
+            </Flex>
+            <Flex>
+              <PortalText weight="400">Chat</PortalText>
+            </Flex>
+          </Flex>
+          <PortalText weight="400">© 2021 Portals DAO</PortalText>
+        </Flex>
+      </footer>
     </div>
   );
 };
