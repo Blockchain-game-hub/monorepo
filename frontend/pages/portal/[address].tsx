@@ -22,7 +22,6 @@ import ContentCard from "../../components/ContentCard";
 import Navbar from "../../components/Navbar";
 import { creator, contentCards } from "../../utils/mockData";
 import PortalText, { textConfig } from "../../components/PortalText";
-import { capitalizeFirstChar } from "../../utils/strings";
 import { useQuery } from "@apollo/client";
 import { ethers } from "ethers";
 import { WalletService, Web3Service } from "@unlock-protocol/unlock-js";
