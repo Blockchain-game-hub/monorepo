@@ -103,8 +103,12 @@ const Post = () => {
     return <Spinner />;
   }
 
-  const anyActiveKeys = (locks) => {
+  const isContentUnlocked = (locks) => {
     if (!post?.isPrivate) {
+      return true;
+    }
+
+    if (loggedInAddress === post?.user?.address) {
       return true;
     }
     if (!locks) {
@@ -137,10 +141,10 @@ const Post = () => {
       <Navbar />
       <Container maxW="975px" centerContent>
         <Heading>
-          {anyActiveKeys(data.locks) ? "Unlocked" : "Content Locked"}
+          {isContentUnlocked(data.locks) ? "Unlocked" : "Content Locked"}
         </Heading>
 
-        {anyActiveKeys(data.locks) && <MediaPost content={post} />}
+        {isContentUnlocked(data.locks) && <MediaPost content={post} />}
       </Container>
     </Flex>
   );
