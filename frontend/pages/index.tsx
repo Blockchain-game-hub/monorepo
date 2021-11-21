@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { Heading, Button, Flex, Grid, Container } from "@chakra-ui/react";
+import { Button, Flex, Grid, Container } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import ContentCard from "../components/ContentCard";
 import PortalText, { textConfig } from "../components/PortalText";
@@ -21,16 +21,16 @@ const Home: NextPage = () => {
     }
     async function fetchPostData() {
       try {
-        const response = await fetch('/api/post', {
+        const response = await fetch("/api/post", {
           method: "GET",
           headers: {
-              "Authorization": `${auth?.token}`,
-              "Content-Type": "application/json",
+            Authorization: `${auth?.token}`,
+            "Content-Type": "application/json",
           },
         });
         const result = await response.json();
         setPosts(result);
-        console.log(posts)
+        console.log(posts);
       } catch (err) {
         console.log("err", err);
       }
@@ -96,7 +96,9 @@ const Home: NextPage = () => {
             paddingTop="60px"
           >
             {posts.map((post) => {
-              return <ContentCard key={post.id} content={post} showDate={true} />;
+              return (
+                <ContentCard key={post.id} content={post} showDate={true} />
+              );
             })}
           </Grid>
         </main>
