@@ -1,50 +1,49 @@
-
-import { 
-    Icon,
-    Modal, 
-    ModalOverlay, 
-    ModalContent, 
-    ModalHeader, 
-    ModalBody, 
-    ModalFooter, 
-    ModalCloseButton, 
-    Button, 
-    Input,
-    Text, 
-    Textarea, 
-    Flex, 
-    Checkbox, 
-    FormControl,
-    FormLabel,
-    Image,
-    Divider,
-    VStack,
-    useToast,
-    useDisclosure,
-
+import {
+  Icon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+  Button,
+  Input,
+  Text,
+  Textarea,
+  Flex,
+  Checkbox,
+  FormControl,
+  FormLabel,
+  Image,
+  Divider,
+  VStack,
+  useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { IoDiamondOutline } from "react-icons/io5";
 import React from "react";
 import { useWalletContext } from "../context/wallet";
 
-
 export default function PostModal() {
-    const walletContext = useWalletContext();
-    const { auth } = walletContext;
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const initialValues = {
-        title: "",
-        description: "",
-        type: null,
-        file: null,
-        isPrivate: false,
-    };
-    const toast = useToast();
-    const [values, setValues] = React.useState(initialValues)
-    const handleChange = (event) => setValues({ ...values, [event.target.name]: event.target.value });
-    const setFile = (event) => setValues({ ...values, [event.target.name]: event.target.files[0] });
-    const setIsPrivate = (event) => setValues({ ...values, [event.target.name]: event.target.checked });
-
+  const walletContext = useWalletContext();
+  const { auth } = walletContext;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialValues = {
+    title: "",
+    description: "",
+    type: null,
+    file: null,
+    isPrivate: false,
+  };
+  const toast = useToast();
+  const [values, setValues] = React.useState(initialValues);
+  const handleChange = (event) =>
+    setValues({ ...values, [event.target.name]: event.target.value });
+  const setFile = (event) =>
+    setValues({ ...values, [event.target.name]: event.target.files[0] });
+  const setIsPrivate = (event) =>
+    setValues({ ...values, [event.target.name]: event.target.checked });
 
   // TODO: Add missing membership step
   const steps = ["create", "preview"];
@@ -67,6 +66,15 @@ export default function PostModal() {
         alert("Please select a file");
         return;
       }
+
+      if (
+        values.type === "VIDEO" &&
+        values.isPrivate &&
+        !values.duration.includes(":")
+      ) {
+        alert("Please enter a valid timestamp in the format hh:mm:ss");
+        return;
+      }
       setStep(step + 1);
     } else {
       if (confirmSubmit) {
@@ -80,7 +88,7 @@ export default function PostModal() {
         await fetch("/api/post", {
           method: "POST",
           headers: {
-              "Authorization": `${auth.token}`
+            Authorization: `${auth.token}`,
           },
           body: formData,
         }).then((res) => {
@@ -131,8 +139,14 @@ export default function PostModal() {
           <>
             <ModalHeader fontFamily="Montaga">Create Media</ModalHeader>
             <ModalBody>
-              <FormControl id="title">
-                <FormLabel className={styles.labelStyle}>Title</FormLabel>
+              <FormControl mb="3" id="title">
+                <FormLabel
+                  color="#BDBDBD"
+                  fontWeight="700"
+                  className={styles.labelStyle}
+                >
+                  Title
+                </FormLabel>
                 <Input
                   name="title"
                   value={values.title}
@@ -143,8 +157,12 @@ export default function PostModal() {
                   className={styles.inputStyle}
                 />
               </FormControl>
-              <FormControl id="description">
-                <FormLabel className={styles.labelStyle}>
+              <FormControl mb="3" id="description">
+                <FormLabel
+                  color="#BDBDBD"
+                  fontWeight="700"
+                  className={styles.labelStyle}
+                >
                   Description (optional)
                 </FormLabel>
                 <Textarea
@@ -157,23 +175,30 @@ export default function PostModal() {
                   className={styles.inputStyle}
                 />
               </FormControl>
-              <FormControl id="file">
-                <FormLabel className={styles.labelStyle}>
+
+              <FormControl mb="3" id="file">
+                <FormLabel
+                  color="#BDBDBD"
+                  fontWeight="700"
+                  className={styles.labelStyle}
+                >
                   Upload Attachment (select one)
                 </FormLabel>
                 {values.type === null ? (
                   <Flex
                     alignItems="center"
+                    flexDirection="row-reverse"
                     justifyContent="space-between"
                     p="5"
                     top="0"
                     width="100%"
-                    height="5em"
                   >
                     <Button
                       name="type"
                       value="IMAGE"
                       color="white"
+                      height="8em"
+                      width="45%"
                       onClick={handleChange}
                       colorScheme={
                         values.type === "IMAGE" ? "blue" : "transparent"
@@ -184,9 +209,12 @@ export default function PostModal() {
                         values.type === "IMAGE" ? "transparent" : "#9C9A9A"
                       }
                     >
-                      Image
+                      <Flex flexDirection="column">
+                        <Text>Image</Text>
+                        <Text fontWeight="300">.png .jpg .gif or .tiff</Text>
+                      </Flex>
                     </Button>
-                    <Button
+                    {/* <Button
                       name="type"
                       value="TEXT"
                       color="white"
@@ -217,11 +245,13 @@ export default function PostModal() {
                       }
                     >
                       Audio
-                    </Button>
+                    </Button> */}
                     <Button
                       name="type"
                       value="VIDEO"
+                      height="8em"
                       color="white"
+                      width="45%"
                       onClick={handleChange}
                       colorScheme={
                         values.type === "VIDEO" ? "blue" : "transparent"
@@ -232,21 +262,65 @@ export default function PostModal() {
                         values.type === "VIDEO" ? "transparent" : "#9C9A9A"
                       }
                     >
-                      Video
+                      <Flex flexDirection="column">
+                        <Text>Video</Text>
+                        <Text fontWeight="300">.mp4 or .mov</Text>
+                      </Flex>
                     </Button>
                   </Flex>
                 ) : (
                   // TODO: Style this better
                   <Input
+                    mt="2"
+                    mb="5"
+                    alignItems="center"
                     name="file"
+                    padding="5"
+                    height="5em"
                     onChange={setFile}
                     type="file"
                     className={styles.inputStyle}
                   />
                 )}
               </FormControl>
-              <FormControl id="restrict">
-                <FormLabel className={styles.labelStyle}>
+              {values.type === "VIDEO" && values.isPrivate ? (
+                <FormControl mb="3" id="duration">
+                  <FormLabel
+                    color="#BDBDBD"
+                    fontWeight="700"
+                    className={styles.labelStyle}
+                  >
+                    Public Preview Duration
+                  </FormLabel>
+                  <Text
+                    mb="2"
+                    mt="1"
+                    fontStyle="italic"
+                    fontSize="sm"
+                    color="#BDBDBD"
+                  >
+                    Enter the time marker in the format{" "}
+                    <strong>hh:mm:ss</strong>, denoting when the content starts
+                    becoming restricted to members-only. Leave blank for no
+                    preview.
+                  </Text>
+                  <Input
+                    name="duration"
+                    value={values.duration}
+                    onChange={handleChange}
+                    placeholder="00:00:00"
+                    type="textarea"
+                    mb="8px"
+                    className={styles.inputStyle}
+                  />
+                </FormControl>
+              ) : null}
+              <FormControl mb="3" id="restrict">
+                <FormLabel
+                  color="#BDBDBD"
+                  fontWeight="700"
+                  className={styles.labelStyle}
+                >
                   Restrict Media to Members-Only
                 </FormLabel>
                 <Checkbox

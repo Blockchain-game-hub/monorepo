@@ -21,8 +21,8 @@ export default async function handler(
       const client = makeStorageClient();
       const ipfsRes = await client.get(post?.ipfsURL);
       if (ipfsRes.ok) {
-        const files = await ipfsRes.files()
-        const file = files[0]
+        const files = await ipfsRes.files();
+        const file = files[0];
         ipfsURL = `https://${file.cid}.ipfs.dweb.link`;
       }
 
@@ -31,12 +31,12 @@ export default async function handler(
           id: post?.userId,
         },
         select: {
-            id: true,
-            name: true,
-            username: true,
-            address: true,
-            avatarURL: true,
-        }
+          id: true,
+          name: true,
+          username: true,
+          address: true,
+          avatarURL: true,
+        },
       });
 
       post?.ipfsURL = ipfsURL;
@@ -54,4 +54,5 @@ export default async function handler(
     console.log(err);
     res.status(500).json(null);
   }
+  await prisma.$disconnect();
 }

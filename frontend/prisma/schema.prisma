@@ -52,6 +52,7 @@ model Post {
   isPrivate   Boolean  @default(false)
   type        PostType
   createdAt   DateTime @default(now())
+  duration    String?
 }
 
 enum PostType {
