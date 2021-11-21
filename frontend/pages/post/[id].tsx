@@ -10,9 +10,11 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Icon,
   useDisclosure,
   Button,
 } from "@chakra-ui/react";
+import { RiLock2Line } from "react-icons/ri";
 import Navbar from "../../components/Navbar";
 import MediaPost from "../../components/MediaPost";
 import { useWalletContext } from "../../context/wallet";
@@ -189,11 +191,13 @@ const Post = () => {
     <Flex bg="black" flex="1" minHeight="100vh" flexDir="column">
       <Navbar />
       <Container maxW="975px" centerContent>
-        <Flex mt="10" flexDirection="column" alignItems="center">
+        <Flex mt="20" flexDirection="column" alignItems="center">
           {isContentUnlocked(data.locks) ? (
             <div />
           ) : (
             <>
+              <Icon mb={2} as={RiLock2Line} w={20} h={20} color="white" />
+
               <PortalText config={textConfig.h2}>Content Locked</PortalText>
               <PortalText size="xl">Please purchase a membership</PortalText>
               <Flex
