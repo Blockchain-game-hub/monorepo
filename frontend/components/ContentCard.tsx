@@ -62,14 +62,14 @@ const ContentCard = ({ content, showDate = true }) => {
           >
             {content.title}
           </PortalText>
-          <Flex mt="1em">
+          <Flex mt="1em" alignItems="center">
             <img
               style={{
                 borderRadius: "50%",
                 width: "1.5em",
                 marginRight: "0.5em",
               }}
-              src={content?.avatarURL}
+              src={content?.avatarURL || "/images/avatarPlaceholder.png"}
             />
             <PortalText weight="500" size="sm" color="#52525B">
               {content.author}

@@ -28,4 +28,5 @@ export default async function handler(
     });
   } else {
   }
+  await prisma.$disconnect();
 }

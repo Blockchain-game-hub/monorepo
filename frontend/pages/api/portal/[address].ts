@@ -17,6 +17,7 @@ export default async function handler(
         },
       });
 
+      console.log(user);
       const posts = await prisma.post.findMany({
         where: {
           authorId: user?.id,
@@ -46,4 +47,5 @@ export default async function handler(
   } catch (err) {
     res.status(500).json(null);
   }
+  await prisma.$disconnect();
 }

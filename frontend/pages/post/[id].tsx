@@ -18,6 +18,7 @@ const Post = () => {
   const walletContext = useWalletContext();
   const [walletService, setWalletService] = useState(null);
   const [web3Service, setWeb3Service] = useState(null);
+  const [hideVideo, setHideVideo] = useState(false);
 
   const [locks, setLocks] = useState(null);
   const { auth, address: loggedInAddress } = walletContext;
@@ -99,7 +100,9 @@ const Post = () => {
     onCompleted: (res) => setLocks(res?.locks),
   });
 
-  if (!walletService || !web3Service || loading) {
+  if (!walletService || !web3Service || loading || !data) {
+    console.log("hello", loading, data);
+
     return <Spinner />;
   }
 
@@ -111,6 +114,7 @@ const Post = () => {
     if (loggedInAddress === post?.user?.address) {
       return true;
     }
+
     if (!locks) {
       return false;
     }
@@ -133,6 +137,10 @@ const Post = () => {
       });
     });
 
+    if (!hideVideo && !result && post?.type === "VIDEO") {
+      return true;
+    }
+
     return result;
   };
 
@@ -141,10 +149,14 @@ const Post = () => {
       <Navbar />
       <Container maxW="975px" centerContent>
         <Heading>
-          {isContentUnlocked(data.locks) ? "Unlocked" : "Content Locked"}
+          {isContentUnlocked(data.locks)
+            ? ""
+            : "Content Locked -  Please purchase a membership"}
         </Heading>
 
-        {isContentUnlocked(data.locks) && <MediaPost content={post} />}
+        {isContentUnlocked(data.locks) && (
+          <MediaPost setHideVideo={setHideVideo} content={post} />
+        )}
       </Container>
     </Flex>
   );

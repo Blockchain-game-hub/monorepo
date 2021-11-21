@@ -39,4 +39,5 @@ export default async function handler(
   } else {
     res.status(401).json({ message: "Invalid signature" });
   }
+  await prisma.$disconnect();
 }
