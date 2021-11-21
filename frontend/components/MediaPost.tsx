@@ -9,7 +9,7 @@ import Image from "next/image";
 
 const MediaPost = ({ content, setHideVideo }) => {
   const isWindowDefined = typeof window !== undefined;
-  const [durationSeconds, setDurationSeconds] = useState(null);
+  const [durationSeconds, setDurationSeconds] = useState(10);
   const [timestamp, setTimestamp] = useState(null);
 
   const vidRef = useRef();
@@ -31,7 +31,11 @@ const MediaPost = ({ content, setHideVideo }) => {
       return;
     }
     if (content.type === "VIDEO") {
-      const time = content.duration.split(":");
+      // Defaults to 10s
+      if (!content?.duration) {
+        return;
+      }
+      const time = content?.duration.split(":");
       let seconds =
         parseInt(time[0]) * 60 * 60 +
         parseInt(time[1]) * 60 +
@@ -41,7 +45,6 @@ const MediaPost = ({ content, setHideVideo }) => {
   }, [content]);
 
   if (!isWindowDefined || !content.user) {
-    console.log("hello");
     return <Spinner title="Loading" />;
   } else {
     return (
