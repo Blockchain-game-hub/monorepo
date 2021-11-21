@@ -104,6 +104,9 @@ const Post = () => {
   }
 
   const anyActiveKeys = (locks) => {
+    if (!post?.isPrivate) {
+      return true;
+    }
     if (!locks) {
       return false;
     }
