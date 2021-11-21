@@ -60,7 +60,9 @@ const ContentCard = ({ content, showDate = true }) => {
             size="xl"
             weight="500"
           >
-            {content.title}
+            {content?.title?.length > 20
+              ? content?.title.slice(0, 20) + "..."
+              : content?.title}
           </PortalText>
           <Flex mt="1em" alignItems="center">
             <img

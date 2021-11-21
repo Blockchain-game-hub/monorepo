@@ -32,10 +32,15 @@ handler
 
         if (req.body.type[0] === "VIDEO" && req?.body?.duration) {
           console.log("video, ", req?.body?.duration);
+          let duration =
+            req?.body?.duration && req?.body?.duration[0]
+              ? req?.body?.duration[0]
+              : "00:00:05";
 
+          console.log("duration", duration);
           data = {
             ...data,
-            duration: req?.body?.duration ? req?.body?.duration[0] : "00:00:05",
+            duration,
           };
         }
 
