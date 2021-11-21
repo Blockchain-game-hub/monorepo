@@ -28,7 +28,7 @@ export default async function handler(
 
       const userInfo = await prisma.user.findFirst({
         where: {
-          id: post?.userId,
+          id: post?.authorId,
         },
         select: {
           id: true,
