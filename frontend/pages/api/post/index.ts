@@ -28,7 +28,7 @@ handler
             type: req.body.type[0],
             isPrivate: req.body.isPrivate[0] === "true",
             title: req.body.title[0],
-            duration: req?.body?.duration[0] || null,
+            duration: req?.body?.duration ? req?.body?.duration[0] : null,
             description: req.body.description[0],
           },
         });
