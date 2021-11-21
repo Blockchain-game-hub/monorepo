@@ -30,11 +30,7 @@ handler.use(middleware).post(async (
     }
 }).get(async (req, res) => {
   try {
-    const posts = await prisma.post.findMany({
-      where: {
-        isPrivate: false
-      }
-    });
+    const posts = await prisma.post.findMany();
     res.status(200).json(posts);
   } catch (err) {
     console.log(err);

@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Flex, Icon } from "@chakra-ui/react";
 import PortalText, { textConfig } from "./PortalText";
 import moment from "moment";
 import Link from "next/link";
 import { RiLock2Line } from "react-icons/ri";
 import Spinner from "../components/Spinner";
+import Image from 'next/image'
 
 const MediaPost = ({ content }) => {
   
@@ -24,12 +25,13 @@ const MediaPost = ({ content }) => {
               width="100%"
               height="auto"
             /> :
-            <img
+            <Image
               style={{
                 borderRadius: "4px",
                 width: "975px",
               }}
               src={content?.ipfsURL}
+              alt={content?.title}
             />
           }
         </Flex>
