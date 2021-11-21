@@ -7,4 +7,7 @@ module.exports = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    domains: ["*", "https://*.ipfs.dweb.link"],
+  },
 };

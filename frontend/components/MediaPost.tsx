@@ -62,7 +62,7 @@ const MediaPost = ({ content, setHideVideo }) => {
                 height="auto"
               />
             ) : (
-              <Image
+              <img
                 style={{
                   borderRadius: "4px",
                   width: "975px",
