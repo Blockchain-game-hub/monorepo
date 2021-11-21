@@ -8,7 +8,7 @@ import PortalText from "./PortalText";
 
 const ContentCard = ({ content, showDate = true }) => {
   return (
-    <Link href={`/post/${content.uuid}`}>
+    <Link href={`/post/${content.id}`}>
       <Flex
         borderRadius="4"
         bg="white"
@@ -30,7 +30,7 @@ const ContentCard = ({ content, showDate = true }) => {
             backgroundSize="cover"
             position="absolute"
           />
-          {content?.membersOnly && (
+          {content?.isPrivate && (
             <Flex
               zIndex="2"
               borderTopRadius="4"

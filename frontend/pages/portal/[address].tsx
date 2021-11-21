@@ -408,7 +408,7 @@ const Portal = () => {
           paddingTop="30px"
         >
           {portalData?.posts.map((post) => {
-            return <ContentCard content={post} showDate={true} />;
+            return <ContentCard key={post.id} content={post} showDate={true} />;
           })}
         </Grid>
       </Flex>

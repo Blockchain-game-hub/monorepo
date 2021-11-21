@@ -5,7 +5,7 @@ import moment from "moment";
 import Link from "next/link";
 import { RiLock2Line } from "react-icons/ri";
 
-const MediaPost = ({ content, showDate = true }) => {
+const MediaPost = ({ content }) => {
   return (
     <Flex flexDirection="column" mt="1em" mb="2em">
       <Flex>
@@ -14,7 +14,7 @@ const MediaPost = ({ content, showDate = true }) => {
             borderRadius: "4px",
             width: "975px",
           }}
-          src={content?.previewImageURL}
+          src={content?.ipfsURL}
         />
       </Flex>
 
@@ -45,7 +45,7 @@ const MediaPost = ({ content, showDate = true }) => {
         >
           Created By
         </PortalText>
-        <Link href={`/portal/${content.username}`}>
+        <Link href={`/portal/${content.user?.address}`}>
           <Flex cursor="pointer" alignItems="center" justifyContent="center">
             <img
               style={{
@@ -55,12 +55,21 @@ const MediaPost = ({ content, showDate = true }) => {
               }}
               src={content?.avatarURL}
             />
-            <PortalText config={textConfig.h3}>{content.author}</PortalText>
+            {content.user?.name || content.user?.username ? 
+              <>
+                <PortalText config={textConfig.h3}>{content.user.username}</PortalText>
+                <PortalText config={textConfig.h3}>{content.user.name}</PortalText>
+              </>
+              :
+              <>
+                <PortalText config={textConfig.h3}>{content.user?.address}</PortalText>
+              </>
+            }
           </Flex>
         </Link>
       </Flex>
 
-      {content?.membersOnly && (
+      {content?.isPrivate && (
         <Flex
           mt="0.5em"
           width="100%"
