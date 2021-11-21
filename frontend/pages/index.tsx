@@ -3,11 +3,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import {
-  Heading,
   Button,
-  Flex,
   Grid,
-  GridItem,
   Container,
 } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
