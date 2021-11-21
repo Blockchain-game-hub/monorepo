@@ -98,6 +98,7 @@ export default function PostModal() {
               title: "Successfully Uploaded Post to IPFS",
             });
             setValues(initialValues);
+            setStep(0);
             onClose();
           } else {
             toast({
@@ -342,14 +343,25 @@ export default function PostModal() {
         return (
           <>
             <ModalHeader fontFamily="Montaga">Preview</ModalHeader>
-            <Image
-              paddingInline="6"
-              src={URL.createObjectURL(values.file)}
-              alt={values.title}
-            />
-            <VStack paddingInline="6" spacing={1} align="start">
-              <Text fontSize="lg">{values.title}</Text>
-              <Text>{values.description}</Text>
+            {values?.type === "IMAGE" ? (
+              <Image
+                paddingInline="6"
+                src={values?.file ? URL.createObjectURL(values.file) : null}
+                alt={values?.title ? values.title : null}
+              />
+            ) : (
+              <video
+                src={values?.file ? URL.createObjectURL(values.file) : null}
+                controls
+                width="100%"
+                height="auto"
+              />
+            )}
+            <VStack mt="5" mb="5" paddingInline="6" spacing={1} align="start">
+              <Text fontWeight="700" fontSize="lg">
+                Title: {values.title}
+              </Text>
+              <Text fontWeight="700">Description: {values.description}</Text>
             </VStack>
             <Divider paddingTop="2" />
             <Checkbox
@@ -379,7 +391,7 @@ export default function PostModal() {
         isOpen={isOpen}
         onClose={() => {
           setValues(initialValues);
-
+          setStep(0);
           onClose();
         }}
       >
