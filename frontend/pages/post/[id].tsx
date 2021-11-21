@@ -99,7 +99,7 @@ const Post = () => {
     onCompleted: (res) => setLocks(res?.locks),
   });
 
-  if (!walletService || !web3Service || loading || !data) {
+  if (!walletService || !web3Service || loading) {
     return <Spinner />;
   }
 
