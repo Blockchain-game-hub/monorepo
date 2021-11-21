@@ -21,17 +21,28 @@ handler
         const files = await getFiles(req.files.file[0].path);
         const cid = await storageClient.put(files);
 
+        let data = {
+          authorId: decoded.id,
+          ipfsURL: cid,
+          type: req.body.type[0],
+          isPrivate: req.body.isPrivate[0] === "true",
+          title: req.body.title[0],
+          description: req.body.description[0],
+        };
+
+        console.log("video, ", req?.body?.duration);
+
+        if (req.body.type[0] === "VIDEO") {
+          data = {
+            ...data,
+            duration: req?.body?.duration ? req?.body?.duration[0] : "00:00:05",
+          };
+        }
+
         const post = await prisma.post.create({
-          data: {
-            authorId: decoded.id,
-            ipfsURL: cid,
-            type: req.body.type[0],
-            isPrivate: req.body.isPrivate[0] === "true",
-            title: req.body.title[0],
-            duration: req?.body?.duration ? req?.body?.duration[0] : null,
-            description: req.body.description[0],
-          },
+          data,
         });
+
         res.status(200).json(post);
         await prisma.$disconnect();
       });

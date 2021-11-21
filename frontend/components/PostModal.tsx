@@ -97,6 +97,7 @@ export default function PostModal() {
               status: "success",
               title: "Successfully Uploaded Post to IPFS",
             });
+            setValues(initialValues);
             onClose();
           } else {
             toast({
@@ -106,6 +107,8 @@ export default function PostModal() {
           }
           setSubmitting(false);
           setStep(0);
+          setValues(initialValues);
+
           onClose();
         });
       } else {
@@ -372,7 +375,14 @@ export default function PostModal() {
       <Button color="black" bg="white" borderRadius="5" onClick={onOpen}>
         <Icon as={IoDiamondOutline} style={{ marginRight: "0.5em" }} /> Create
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          setValues(initialValues);
+
+          onClose();
+        }}
+      >
         <ModalOverlay />
         <ModalContent bg="#1F1F1F" color="#FFFFFF">
           <ModalCloseButton />
