@@ -8,7 +8,7 @@ import ContentCard from "../components/ContentCard";
 import PortalText, { textConfig } from "../components/PortalText";
 import { useWalletContext } from "../context/wallet";
 import { useRouter } from "next/router";
-
+import Link from "next/link";
 const Home: NextPage = () => {
   const walletContext = useWalletContext();
   const { auth, address, connect, disconnect } = walletContext;
