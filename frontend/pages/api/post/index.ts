@@ -20,6 +20,7 @@ handler
       jwtVerify(res, req.headers.authorization, async (err, decoded) => {
         const files = await getFiles(req.files.file[0].path);
         const cid = await storageClient.put(files);
+
         const post = await prisma.post.create({
           data: {
             authorId: decoded.id,
@@ -32,6 +33,7 @@ handler
           },
         });
         res.status(200).json(post);
+        await prisma.$disconnect();
       });
     } catch (err) {
       console.log(err);
@@ -40,12 +42,31 @@ handler
   })
   .get(async (req, res) => {
     try {
-      const posts = await prisma.post.findMany();
-      res.status(200).json(posts);
+      const posts = await prisma.post.findMany({
+        include: {
+          author: true,
+        },
+      });
+
+      let response = [];
+
+      posts.forEach((post, idx) => {
+        let user = post?.author;
+        delete post?.author;
+
+        response.push({
+          ...post,
+          author: user?.name,
+          username: user?.username,
+        });
+      });
+
+      res.status(200).json(response);
     } catch (err) {
       console.log(err);
       res.status(500).json(null);
     }
+    await prisma.$disconnect();
   });
 
 export const config = {

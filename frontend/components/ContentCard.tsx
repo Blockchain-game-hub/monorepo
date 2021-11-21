@@ -71,7 +71,7 @@ const ContentCard = ({ content, showDate = true }) => {
               }}
               src={content?.avatarURL || "/images/avatarPlaceholder.png"}
             />
-            <PortalText weight="500" size="sm" color="#52525B">
+            <PortalText weight="500" color="black" size="sm" color="#52525B">
               {content.author}
             </PortalText>
           </Flex>
