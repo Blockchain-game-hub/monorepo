@@ -15,13 +15,23 @@ const MediaPost = ({ content }) => {
     return (
       <Flex flexDirection="column" mt="1em" mb="2em">
         <Flex>
-          <img
-            style={{
-              borderRadius: "4px",
-              width: "975px",
-            }}
-            src={content?.ipfsURL}
-          />
+          {
+            // only showing image or video
+            content.type === "VIDEO" ?
+            <video
+              src={content.ipfsURL}
+              controls
+              width="100%"
+              height="auto"
+            /> :
+            <img
+              style={{
+                borderRadius: "4px",
+                width: "975px",
+              }}
+              src={content?.ipfsURL}
+            />
+          }
         </Flex>
   
         <Flex mt="2em" mb="3em" alignItems="center" justifyContent="center">
